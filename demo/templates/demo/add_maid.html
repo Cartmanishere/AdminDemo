@@ -1,0 +1,816 @@
+{% extends 'demo/layout.html' %}
+{% block body %}
+    <div class="row">
+        <div class="col s12">
+            <div class="page-title">Maid Information</div>
+        </div>
+        <div class="col s12 m12 l12">
+            <form class="col s12" action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <!-- GENERAL INFORMATION -->
+
+
+                <div class="card">
+                    <div class="card-content">
+
+                    <!-- Name Fields -->
+                    
+                    <span class="card-title" style="font-size: 18px">General Profile</span><br><br />
+                    <div class="row">
+                            <span class="" style="font-size: 18px"><strong>Name Fields</strong></span><br><br />
+                            <div class="row">
+                                <div class="input-field col s12 l4">
+                                    <input name="first_name" id="first_name" type="text" class="validate">
+                                    <label for="first_name">First Name</label>
+                                </div>
+                                <div class="input-field col s12 l4">
+                                    <input name="middle_name" id="middle_name" type="text" class="validate">
+                                    <label for="middle_name">Last Name</label>
+                                </div>
+                                <div class="input-field col s12 l4">
+                                    <input name="last_name" id="last_name" type="text" class="validate">
+                                    <label for="last_name">Last Name</label>
+                                </div>
+                            </div>
+
+                    <!-- Name Fields End -->
+
+                            <!-- Age -->
+                            
+                            <span class="" style="font-size: 18px"><strong>Age</strong></span><br><br />
+                            <div class="row">
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="age" id="age" type="number" max="100" min="15" class="validate">
+                                    <label for="age">Age (in Years)</label>
+                                </div>
+                            </div>
+
+                            <!-- Age ends -->
+                            <!-- Telephone Number -->
+
+                            <span class="" style="font-size: 18px"><strong>Telephone Number</strong></span><br><br />
+                            <div class="row">
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="mobile1" id="mobile1" type="number" maxlength="10" minlength="10" class="validate">
+                                    <label for="mobile1">Mobile 1</label>
+                                </div>
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="mobile2" id="mobile2" type="number" maxlength="10" minlength="10" min="15" class="validate">
+                                    <label for="mobile2">Mobile 2</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="telephone1" id="telephone1" type="number" maxlength="10" minlength="10" class="validate">
+                                    <label for="telephone1">Telephone 1</label>
+                                </div>
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="telephone2" id="telephone2" type="number" maxlength="10" minlength="10" min="15" class="validate">
+                                    <label for="telephone2">Telephone 2</label>
+                                </div>
+                            </div>
+
+                            <!-- Telephone Number ends -->
+                            <!-- Temporary address -->
+
+                            <span class="" style="font-size: 18px"><strong>Temporary Address</strong></span><br><br />
+                            <div class="row">
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="t_house_no" id="t_house_no" type="text" class="validate">
+                                    <label for="t_house_no">House No</label>
+                                </div>
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="t_street_no" id="t_street_no" type="text" class="validate">
+                                    <label for="t_street_no">Street No</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="t_area" id="t_area" type="text" class="validate">
+                                    <label for="t_area">Area</label>
+                                </div>
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="t_landmark" id="t_landmark" type="text" class="validate">
+                                    <label for="t_landmark">Landmark</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="t_at_po" id="t_at_po" type="text" class="validate">
+                                    <label for="t_at_po">At Po.:</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="t_town" id="t_town" type="text" class="validate">
+                                    <label for="t_town">Town</label>
+                                </div>
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="t_district" id="t_district" type="text" class="validate">
+                                    <label for="t_district">District</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="t_state" id="t_state" type="text" class="validate">
+                                    <label for="t_state">State</label>
+                                </div>
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="t_country" id="t_country" type="text" class="validate">
+                                    <label for="t_country">Country</label>
+                                </div>
+                            </div>
+
+                            <!-- Temporary address ends -->
+                            <!-- Permanent Address -->
+
+                            <span class="" style="font-size: 18px"><strong>Permanent Address</strong></span><br><br />
+                            <div class="row">
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="p_house_no" id="p_house_no" type="text" class="validate">
+                                    <label for="p_house_no">House No</label>
+                                </div>
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="p_street_no" id="p_street_no" type="text" class="validate">
+                                    <label for="p_street_no">Street No</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="p_area" id="p_area" type="text" class="validate">
+                                    <label for="p_area">Area</label>
+                                </div>
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="p_landmark" id="p_landmark" type="text" class="validate">
+                                    <label for="p_landmark">Landmark</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12 l6 m6">
+                                    <input name=p_at_po" id="p_at_po" type="text" class="validate">
+                                    <label for="p_at_po">At Po.:</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="p_town" id="p_town" type="text" class="validate">
+                                    <label for="p_town">Town</label>
+                                </div>
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="p_district" id="p_district" type="text" class="validate">
+                                    <label for="p_district">District</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="p_state" id="p_state" type="text" class="validate">
+                                    <label for="p_state">State</label>
+                                </div>
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="p_country" id="p_country" type="text" class="validate">
+                                    <label for="p_country">Country</label>
+                                </div>
+                            </div>
+
+                            <!-- Permanent Addresss ends -->
+                            <!-- Emergency Contact -->
+
+                            <span class="" style="font-size: 18px"><strong>Emergency Contact Person</strong></span><br><br />
+                            <div class="row">
+                                <div class="input-field col s12 l4 m6">
+                                    <input name="e_first_name" id="e_first_name" type="text" class="validate">
+                                    <label for="e_first_name">First Name</label>
+                                </div>
+                                <div class="input-field col s12 l4 m6">
+                                    <input name="e_middle_name" id="e_middle_name" type="text" class="validate">
+                                    <label for="e_middle_name">Last Name</label>
+                                </div>
+                                <div class="input-field col s12 l4 m6">
+                                    <input name="e_last_name" id="e_last_name" type="text" class="validate">
+                                    <label for="e_last_name">Last Name</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <input name="e_rel" id="e_rel" type="text" class="validate">
+                                    <label for="e_rel">Relation with Maid</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="e_mobile1" id="e_mobile1" type="number" maxlength="10" minlength="10" class="validate">
+                                    <label for="e_mobile1">Mobile 1</label>
+                                </div>
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="e_mobile2" id="e_mobile2" type="number" maxlength="10" minlength="10" min="15" class="validate">
+                                    <label for="e_mobile2">Mobile 2</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="e_telephone1" id="e_telephone1" type="number" maxlength="10" minlength="10" class="validate">
+                                    <label for="telephone1">Telephone 1</label>
+                                </div>
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="e_telephone2" id="e_telephone2" type="number" maxlength="10" minlength="10" min="15" class="validate">
+                                    <label for="e_telephone2">Telephone 2</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="e_house_no" id="e_house_no" type="text" class="validate">
+                                    <label for="e_house_no">House No</label>
+                                </div>
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="e_street_no" id="e_street_no" type="text" class="validate">
+                                    <label for="e_street_no">Street No</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12 l6 m6">
+                                    <input name=e_area" id="e_area" type="text" class="validate">
+                                    <label for="e_area">Area</label>
+                                </div>
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="e_landmark" id="e_landmark" type="text" class="validate">
+                                    <label for="e_landmark">Landmark</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="e_at_po" id="e_at_po" type="text" class="validate">
+                                    <label for="e_at_po">At Po.:</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="e_town" id="e_town" type="text" class="validate">
+                                    <label for="e_town">Town</label>
+                                </div>
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="e_district" id="e_district" type="text" class="validate">
+                                    <label for="e_district">District</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="e_state" id="e_state" type="text" class="validate">
+                                    <label for="e_state">State</label>
+                                </div>
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="e_country" id="e_country" type="text" class="validate">
+                                    <label for="e_country">Country</label>
+                                </div>
+                            </div>
+
+                            <!-- Emergency Contact ends -->
+                            <!-- Physical Disability -->
+
+                            <span class="" style="font-size: 18px"><strong>Physical Disability</strong></span><br><br />
+                            <div class="row">
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="physical_disability" id="physical_disability" type="text" class="validate">
+                                    <label for="physical_disability">Physical Disability (if any)</label>
+                                </div>
+                            </div>
+
+                            <!-- Physical Disability ends -->
+                            <!-- ID Proof fields -->
+
+                            <span class="" style="font-size: 18px"><strong>ID Proof</strong></span><br><br />
+                            <div class="row">
+                                <div class="col s12 m6 l6">
+                                    <div class="file-field input-field">
+                                        <div class="btn teal lighten-1">
+                                            <span>Aadhar Card</span>
+                                            <input name="aadhar_card" type="file">
+                                        </div>
+                                        <div class="file-path-wrapper">
+                                            <input class="file-path validate" type="text">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col s12 m6 l6">
+                                    <div class="file-field input-field">
+                                        <div class="btn teal lighten-1">
+                                            <span>Election Card</span>
+                                            <input name="election_card" type="file">
+                                        </div>
+                                        <div class="file-path-wrapper">
+                                            <input class="file-path validate" type="text">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col s12 m6 l6">
+                                    <div class="file-field input-field">
+                                        <div class="btn teal lighten-1">
+                                            <span>PAN Card</span>
+                                            <input name="pan_card" type="file">
+                                        </div>
+                                        <div class="file-path-wrapper">
+                                            <input class="file-path validate" type="text">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col s12 m6 l6">
+                                    <div class="file-field input-field">
+                                        <div class="btn teal lighten-1">
+                                            <span>Passport</span>
+                                            <input name="passport" type="file">
+                                        </div>
+                                        <div class="file-path-wrapper">
+                                            <input class="file-path validate" type="text">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ID Proof ends -->                        
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GENERAL INFORMATION ENDS -->
+                <!-- EDUCATIONAL PROFILE -->
+
+                <div class="card">
+                    <div class="card-content">
+                        <span class="card-title" style="font-size: 18px">Educational Profile</span><br><br />
+                    
+                            <span class="" style="font-size: 18px"><strong>Post Graduate Degree</strong></span><br><br />
+                            <div class="row">
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="pg_specialization" id="pg_specialization" type="text" class="validate">
+                                    <label for="pg_specialization">Specialization</label>
+                                </div>
+                                <div class="col s12 l6 m6">
+                                    <label for="birthdate">Year of Passing</label>
+                                    <input name="pg_year_of_passing" id="birthdate" type="text" class="datepicker">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="pg_percentage" id="pg_percentage" type="number" min="0" max="100" class="validate">
+                                    <label for="pg_percentage">Percentage</label>
+                                </div>
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="pg_university_name" id="pg_university_name" type="text" class="validate">
+                                    <label for="pg_university_name">University Name</label>
+                                </div>
+                            </div>
+
+                            <span class="" style="font-size: 18px"><strong>Bachelors</strong></span><br><br />
+                            <div class="row">
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="b_specialization" id="b_specialization" type="text" class="validate">
+                                    <label for="b_specialization">Specialization</label>
+                                </div>
+                                <div class="col s12 l6 m6">
+                                    <label for="b_year_of_passing">Year of Passing</label>
+                                    <input name="b_year_of_passing" id="b_year_of_passing" type="text" class="datepicker">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="b_percentage" id="b_percentage" type="number" min="0" max="100" class="validate">
+                                    <label for="b_percentage">Percentage</label>
+                                </div>
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="b_university_name" id="b_university_name" type="text" class="validate">
+                                    <label for="b_university_name">University Name</label>
+                                </div>
+                            </div>
+
+                            <span class="" style="font-size: 18px"><strong>Intermediate / HSC</strong></span><br><br />
+                            <div class="row">
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="i_percentage" id="i_percentage" type="number" min="0" max="100" class="validate">
+                                    <label for="i_percentage">Percentage</label>
+                                </div>
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="i_state_board" id="i_state_board" type="text" class="validate">
+                                    <label for="i_state_board">State Board</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col s12 l6 m6">
+                                    <label for="i_year_of_passing">Year of Passing</label>
+                                    <input name="i_year_of_passing" id="i_year_of_passing" type="text" class="datepicker">
+                                </div>
+                            </div>
+                            
+
+                            <span class="" style="font-size: 18px"><strong>SSC</strong></span><br><br />
+                            <div class="row">
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="s_percentage" id="s_percentage" type="number" min="0" max="100" class="validate">
+                                    <label for="s_percentage">Percentage</label>
+                                </div>
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="s_state_board" id="s_state_board" type="text" class="validate">
+                                    <label for="s_state_board">State Board</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col s12 l6 m6">
+                                    <label for="s_year_of_passing">Year of Passing</label>
+                                    <input name="s_year_of_passing" id="s_year_of_passing" type="text" class="datepicker">
+                                </div>
+                            </div>
+
+                            <span class="" style="font-size: 18px"><strong>Below SSC</strong></span><br><br />
+                            <div class="row">
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="below_ssc_percentage" id="below_ssc_percentage" type="number" min="0" max="100" class="validate">
+                                    <label for="below_ssc_percentage">Percentage</label>
+                                </div>
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="below_ssc_state_board" id="below_ssc_state_board" type="text" class="validate">
+                                    <label for="below_ssc_state_board">State Board</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col s12 l6 m6">
+                                    <label for="below_ssc_year_of_passing">Year of Passing</label>
+                                    <input name="below_ssc_year_of_passing" id="below_ssc_year_of_passing" type="text" class="datepicker">
+                                </div>
+                            </div>
+                            
+
+
+                    </div>
+                </div>
+
+                <!-- EDUCATIONAL PROFILE ENDS -->
+
+                <!-- JOB PROFILE BEGINS -->
+
+                 <div class="card">
+                    <div class="card-content">
+                        <span class="card-title" style="font-size: 18px">Job Profile</span><br><br />
+                        <span class="" style="font-size: 18px"><strong>Job Experience 1</strong></span><br><br />
+                            <div class="row">
+                                <div class="col s12 l6 m6">
+                                    <label for="1_from_year">From</label>
+                                    <input name="1_from_year" id="1_from_year" type="text" class="datepicker">
+                                </div>
+                                <div class="col s12 l6 m6">
+                                    <label for="1_to_year">To</label>
+                                    <input name="1_to_year" id="1_to_year" type="text" class="datepicker">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="1_organisation" id="1_organisation" type="text" class="validate">
+                                    <label for="1_organisation">Organisation</label>
+                                </div>
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="1_salary" id="1_salary" type="text" class="validate">
+                                    <label for="1_salary">Salary</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12 l12 m12">
+                                    <input name="1_reason_left" id="1_reason_left" type="text" class="validate">
+                                    <label for="1_reason_left">Reason for leaving employment</label>
+                                </div>
+                            </div>
+
+                        <span class="" style="font-size: 18px"><strong>Job Experience 2</strong></span><br><br />
+                            <div class="row">
+                                <div class="col s12 l6 m6">
+                                    <label for="2_from_year">From</label>
+                                    <input name="2_from_year" id="2_from_year" type="text" class="datepicker">
+                                </div>
+                                <div class="col s12 l6 m6">
+                                    <label for="2_to_year">To</label>
+                                    <input name="2_to_year" id="2_to_year" type="text" class="datepicker">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="2_organisation" id="2_organisation" type="text" class="validate">
+                                    <label for="2_organisation">Organisation</label>
+                                </div>
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="2_salary" id="2_salary" type="text" class="validate">
+                                    <label for="2_salary">Salary</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12 l12 m12">
+                                    <input name="2_reason_left" id="2_reason_left" type="text" class="validate">
+                                    <label for="2_reason_left">Reason for leaving employment</label>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+
+                <!-- JOB PROFILE ENDS -->
+                <!-- SKILLS -->
+
+                <div class="card">
+                    <div class="card-content">
+                        <span class="card-title" style="font-size: 18px">Skills</span><br><br />
+                        <div class="row">
+                            <div class="col s12">
+                                <p class="p-v-xs">
+                                    <input name="skills[]" type="checkbox" id="skills1" value="Bathroom Cleaning" />
+                                    <label for="skills1">Bathroom Cleaning</label>
+                                </p>
+                                <p class="p-v-xs">
+                                    <input name="skills[]" type="checkbox" id="skills2" value="Clothes Washing (With Washing Machine)" />
+                                    <label for="skills2">Clothes Washing (With Washing Machine)</label>
+                                </p>
+                                <p class="p-v-xs">
+                                    <input name="skills[]" type="checkbox" id="skills3" value="Dusting" />
+                                    <label for="skills3">Dusting</label>
+                                </p>
+                                <p class="p-v-xs">
+                                    <input name="skills[]" type="checkbox" id="skills4" value="Grocery Shopping" />
+                                    <label for="skills4">Grocery Shopping</label>
+                                </p>
+                                <p class="p-v-xs">
+                                    <input name="skills[]" type="checkbox" id="skills5" value="Clothes Washing (Without Washing Machine)" />
+                                    <label for="skills5">Clothes Washing (Without Washing Machine)</label>
+                                </p>
+                                <p class="p-v-xs">
+                                    <input name="skills[]" type="checkbox" id="skills6" value="Floor Cleaning" />
+                                    <label for="skills6">Floor Cleaning</label>
+                                </p>
+                                <p class="p-v-xs">
+                                    <input name="skills[]" type="checkbox" id="skills7" value="Utensil Cleaning" />
+                                    <label for="skills7">Utensil Cleaning</label>
+                                </p>
+                                <p class="p-v-xs">
+                                    <input name="skills[]" type="checkbox" id="skills8" value="Cleaning" />
+                                    <label for="skills8">Cleaning</label>
+                                </p>
+                                <p class="p-v-xs">
+                                    <input name="skills[]" type="checkbox" id="skills9" value="Feeding" />
+                                    <label for="skills9">Feeding</label>
+                                </p>
+                                <p class="p-v-xs">
+                                    <input name="skills[]" type="checkbox" id="skills10" value="Giving Medicines" />
+                                    <label for="skills10">Giving Medicines</label>
+                                </p>
+                                <p class="p-v-xs">
+                                    <input name="skills[]" type="checkbox" id="skills11" value="Massage" />
+                                    <label for="skills11">Massage</label>
+                                </p>
+                                <p class="p-v-xs">
+                                    <input name="skills[]" type="checkbox" id="skills12" value="Taking Elderly for a Walk" />
+                                    <label for="skills12">Taking Elderly for a Walk</label>
+                                </p>
+                                <p class="p-v-xs">
+                                    <input name="skills[]" type="checkbox" id="skills13" value="Taking Baby for a Walk" />
+                                    <label for="skills13">Taking Baby for a Walk</label>
+                                </p>
+                                <p class="p-v-xs">
+                                    <input name="skills[]" type="checkbox" id="skills14" value="Cook (Only Veg)" />
+                                    <label for="skills14">Cook (Only Veg)</label>
+                                </p>
+                                <p class="p-v-xs">
+                                    <input name="skills[]" type="checkbox" id="skills15" value="Cook (Both Veg & Non-Veg)" />
+                                    <label for="skills15">Cook (Both Veg & Non-Veg)</label>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SKILLS END -->
+                <!-- OTHER DETAIlS -->
+
+                <div class="card">
+                    <div class="card-content">
+                        <span class="card-title" style="font-size: 18px">Other Details</span><br><br />
+                        <div class="row">
+                            <div class="input-field col s12 l12 m12">
+                                <input name="medical_issues" id="medical_issues" type="text" class="validate">
+                                <label for="medical_issues">Medical Issues</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12 l6 m6">
+                                <input name="current_salary" id="current_salary" type="number" class="validate">
+                                <label for="current_salary">Current Salary</label>
+                            </div>
+                            <div class="input-field col s12 l6 m6">
+                                <input name="expected_salary" id="expected_salary" type="number" class="validate">
+                                <label for="expected_salary">Expected Salary</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- OTHER DETAILS -->
+                <!-- UPLOAD -->
+                <div class="card">
+                    <div class="card-content">
+                        <span class="card-title" style="font-size: 18px">Uploads</span><br><br />
+                        <div class="row">
+                            <div class="col s12 m6 l6">
+                                <div class="file-field input-field">
+                                    <div class="btn teal lighten-1">
+                                        <span>PG Degree</span>
+                                        <input name="pg_degree_c" type="file">
+                                    </div>
+                                    <div class="file-path-wrapper">
+                                        <input class="file-path validate" type="text">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col s12 m6 l6">
+                                <div class="file-field input-field">
+                                    <div class="btn teal lighten-1">
+                                        <span>Bachelors</span>
+                                        <input name="b_certificate" type="file">
+                                    </div>
+                                    <div class="file-path-wrapper">
+                                        <input class="file-path validate" type="text">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12 m6 l6">
+                                <div class="file-field input-field">
+                                    <div class="btn teal lighten-1">
+                                        <span>HSC</span>
+                                        <input name="hsc" type="file">
+                                    </div>
+                                    <div class="file-path-wrapper">
+                                        <input class="file-path validate" type="text">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col s12 m6 l6">
+                                <div class="file-field input-field">
+                                    <div class="btn teal lighten-1">
+                                        <span>SSC</span>
+                                        <input name="ssc" type="file">
+                                    </div>
+                                    <div class="file-path-wrapper">
+                                        <input class="file-path validate" type="text">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12 m6 l6">
+                                <div class="file-field input-field">
+                                    <div class="btn teal lighten-1">
+                                        <span>Below SSC</span>
+                                        <input name="below_ssc" type="file">
+                                    </div>
+                                    <div class="file-path-wrapper">
+                                        <input class="file-path validate" type="text">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col s12 m6 l6">
+                                <div class="file-field input-field">
+                                    <div class="btn teal lighten-1">
+                                        <span>Signature</span>
+                                        <input name="signature" type="file">
+                                    </div>
+                                    <div class="file-path-wrapper">
+                                        <input class="file-path validate" type="text">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12 m6 l6">
+                                <div class="file-field input-field">
+                                    <div class="btn teal lighten-1">
+                                        <span>Thumb</span>
+                                        <input name="thumb" type="file">
+                                    </div>
+                                    <div class="file-path-wrapper">
+                                        <input class="file-path validate" type="text">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col s12 m6 l6">
+                                <div class="file-field input-field">
+                                    <div class="btn teal lighten-1">
+                                        <span>Passport Size</span>
+                                        <input name="passport_size" type="file">
+                                    </div>
+                                    <div class="file-path-wrapper">
+                                        <input class="file-path validate" type="text">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12 m6 l6">
+                                <div class="file-field input-field">
+                                    <div class="btn teal lighten-1">
+                                        <span>Full Size</span>
+                                        <input name="full_size" type="file">
+                                    </div>
+                                    <div class="file-path-wrapper">
+                                        <input class="file-path validate" type="text">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="" style="font-size: 18px"><strong>Passport</strong></span><br><br />
+                        <div class="row">
+                            <div class="col s12 m6 l6">
+                                <div class="file-field input-field">
+                                    <div class="btn teal lighten-1">
+                                        <span>Front-Page</span>
+                                        <input name="p_front_page" type="file">
+                                    </div>
+                                    <div class="file-path-wrapper">
+                                        <input class="file-path validate" type="text">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col s12 m6 l6">
+                                <div class="file-field input-field">
+                                    <div class="btn teal lighten-1">
+                                        <span>Back-Page</span>
+                                        <input name="p_back_page" type="file">
+                                    </div>
+                                    <div class="file-path-wrapper">
+                                        <input class="file-path validate" type="text">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="" style="font-size: 18px"><strong>Bank Passbook</strong></span><br><br />
+                        <div class="row">
+                            <div class="col s12 m6 l6">
+                                <div class="file-field input-field">
+                                    <div class="btn teal lighten-1">
+                                        <span>Front-Page</span>
+                                        <input name="b_front_page" type="file">
+                                    </div>
+                                    <div class="file-path-wrapper">
+                                        <input class="file-path validate" type="text">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col s12 m6 l6">
+                                <div class="file-field input-field">
+                                    <div class="btn teal lighten-1">
+                                        <span>Back-Page</span>
+                                        <input name="b_back_page" type="file">
+                                    </div>
+                                    <div class="file-path-wrapper">
+                                        <input class="file-path validate" type="text">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="" style="font-size: 18px"><strong>Visa</strong></span><br><br />
+                        <div class="row">
+                            <div class="col s12 m6 l6">
+                                <div class="file-field input-field">
+                                    <div class="btn teal lighten-1">
+                                        <span>Front-Page</span>
+                                        <input name="v_front_page" type="file">
+                                    </div>
+                                    <div class="file-path-wrapper">
+                                        <input class="file-path validate" type="text">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col s12 m6 l6">
+                                <div class="file-field input-field">
+                                    <div class="btn teal lighten-1">
+                                        <span>Back-Page</span>
+                                        <input name="v_back_page" type="file">
+                                    </div>
+                                    <div class="file-path-wrapper">
+                                        <input class="file-path validate" type="text">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+
+                <!-- UPLOAD ENDS -->
+
+                <div class="row">
+                    <div class="col s12 m12 l12">
+                        <input type="submit" class="waves-effect waves-green btn m-b-xs" value="submit">
+                                        
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+
+{% endblock %}
