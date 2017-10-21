@@ -447,6 +447,15 @@ def delete_maid(request, id):
 
 
 
+def logout_user(request):
+    if request.user.is_authenticated:
+        logout(request)
+        return redirect('/')
+    else:
+        return redirect('/')
+
+
+
 
 
 
