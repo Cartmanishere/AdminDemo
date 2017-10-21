@@ -292,7 +292,7 @@ def add_maid(request):
         skills.save()
         skills_list = request.POST.getlist('skills', [])
         for i in skills_list:
-            skill = Skill(skill=skill)
+            skill = Skill(skill=i)
             skill.save()
             skills.values.add(skill)
 
