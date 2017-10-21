@@ -15,7 +15,39 @@ from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
 
 def index(request):
-    return render(request, 'demo/layout.html', {})
+    maids = Maid.objects.all()
+    return render(request, 'demo/maid_index.html', {'maids':maids})
+
+def signup(request):
+    if request.user.is_authenticated():
+        return redirect('/')
+    else:
+        if request.method == "GET":
+            return render(request, 'demo/sign_up.html', {})
+
+        else:
+            email = request.POST['email']
+            password = request.POST['password']
+            u = User(username=email, password=password)
+            u.set_password(password)
+            u.save()
+            user = authenticate(username=email, password=password)
+            login(request, user)
+            messages.add_message(request, messages.INFO, "Thank you for signing up!")
+            # if user is not None:
+            #     if user.is_active:
+            #         login(request, user)
+            #         # TODO:: Add redirect to exams page
+            #         return HttpResponse("You have successfully logged in!")
+            #
+            #     else:
+            #         messages.add_message(request, messages.INFO, "Your account has been disabled!")
+            #         # TODO:: Add redirect to login page
+            #         return HttpResponse("Your account is not active.")
+            #
+            # else:
+            #     return HttpResponse("something fucked up when this shouldn't even be possible")
+            return redirect('/')
 
 def login_user(request):
     if request.user.is_authenticated():
@@ -183,7 +215,7 @@ def add_maid(request):
         university_name = request.POST.get('pg_university_name', None)
         pg_degree = PG_Degree(
             specialization=specialization,
-            year_of_passsing=year_of_passing,
+            year_of_passing=year_of_passing,
             percentage=percentage,
             university_name=university_name
         )
@@ -194,7 +226,7 @@ def add_maid(request):
         university_name = request.POST.get('b_university_name', None)
         bachelors = Bachelors(
             specialization=specialization,
-            year_of_passsing=year_of_passing,
+            year_of_passing=year_of_passing,
             percentage=percentage,
             university_name=university_name
         )
@@ -203,7 +235,7 @@ def add_maid(request):
         percentage = request.POST.get('i_percentage', None)
         state_board = request.POST.get('i_state_board', None)
         intermediate = Intermediate(
-            year_of_passsing=year_of_passing,
+            year_of_passing=year_of_passing,
             percentage=percentage,
             state_board=state_board
         )
@@ -212,7 +244,7 @@ def add_maid(request):
         percentage = request.POST.get('s_percentage', None)
         state_board = request.POST.get('s_state_board', None)
         ssc = SSC(
-            year_of_passsing=year_of_passing,
+            year_of_passing=year_of_passing,
             percentage=percentage,
             state_board=state_board
         )
@@ -221,7 +253,7 @@ def add_maid(request):
         percentage = request.POST.get('below_ssc_percentage', None)
         state_board = request.POST.get('below_ssc_state_board', None)
         below_ssc = Below_SSC(
-            year_of_passsing=year_of_passing,
+            year_of_passing=year_of_passing,
             percentage=percentage,
             state_board=state_board
         )
@@ -256,13 +288,14 @@ def add_maid(request):
         job_experience.save()
         job_profile.job_experience.add(job_experience)
         job_profile.save()
-
+        skills = Skills()
+        skills.save()
         skills_list = request.POST.getlist('skills', [])
-        skills_str = ""
         for i in skills_list:
-            skills_str = skills_str + "|" + i
+            skill = Skill(skill=skill)
+            skill.save()
+            skills.values.add(skill)
 
-        skills = Skills(values=skills_str)
         skills.save()
         medical_issues = request.POST.get('medical_issues', None)
         current_salary = request.POST.get('current_salary', None)
@@ -311,12 +344,111 @@ def add_maid(request):
             job_profile=job_profile,
             skills=skills,
             other_details=other_details,
-            uploads=uploads
+            uploads=uploads,
+            user=request.user
         )
         maid.save()
 
-        messages.success(request, "I will kill myself if this doesn't work soon.")
+        messages.success(request, "Maid has been created.")
         return redirect('/')
+
+def view_maid(request, id):
+    try:
+        maid = Maid.objects.get(id=id)
+        maid.general_profile.id_proof.aadhar_card.is_there = bool(maid.general_profile.id_proof.aadhar_card)
+        maid.general_profile.id_proof.election_card.is_there = bool(maid.general_profile.id_proof.election_card)
+        maid.general_profile.id_proof.pan_card.is_there = bool(maid.general_profile.id_proof.pan_card)
+        maid.uploads.passport.front_page.is_there = bool(maid.uploads.passport.front_page)
+        maid.uploads.passport.back_page.is_there = bool(maid.uploads.passport.back_page)
+        maid.uploads.bank_passbook.front_page.is_there = bool(maid.uploads.bank_passbook.front_page)
+        maid.uploads.bank_passbook.back_page.is_there = bool(maid.uploads.bank_passbook.back_page)
+        maid.uploads.visa.front_page.is_there = bool(maid.uploads.visa.front_page)
+        maid.uploads.visa.back_page.is_there = bool(maid.uploads.visa.back_page)
+        maid.uploads.pg_degree.is_there = bool(maid.uploads.pg_degree)
+        maid.uploads.bachelors.is_there = bool(maid.uploads.bachelors)
+        maid.uploads.intermediate.is_there = bool(maid.uploads.intermediate)
+        maid.uploads.ssc.is_there = bool(maid.uploads.ssc)
+        maid.uploads.below_ssc.is_there = bool(maid.uploads.below_ssc)
+        maid.uploads.signature.is_there = bool(maid.uploads.signature)
+        maid.uploads.thumb_impression.is_there = bool(maid.uploads.thumb_impression)
+        maid.uploads.passport_size.is_there = bool(maid.uploads.passport_size)
+        maid.uploads.medical.is_there = bool(maid.uploads.medical)
+        maid.uploads.full_body.is_there = bool(maid.uploads.full_body)
+
+    except Exception as e:
+        messages.error(request, "This maid does not exist.")
+        return redirect('/')
+
+    return render(request, 'demo/view_maid.html', {'maid': maid})
+
+
+@login_required(login_url='/login/')
+def delete_maid(request, id):
+    try:
+        m = Maid.objects.all(id=id)
+    except:
+        messages.error(request, "No such maid exists.")
+        return redirect('/')
+
+    if m.user == request.user:
+        name = m.general_profile.name
+        id_proof = m.general_profile.id_proof
+        contact_number = m.general_profile.contact_number
+        temporary_address = m.general_profile.temporary_address
+        permanent_address = m.general_profile.permanent_address
+        emergency_contact = m.general_profile.emergency_contact
+
+        pg_degree = m.educational_profile.pg_degree
+        bachelors = m.educational_profile.bachelors
+        ssc = m.educational_profile.ssc
+        intermediate = m.educational_profile.intermediate
+        below_ssc = m.educational_profile.below_ssc
+
+        job_profile = m.job_profile
+        other_details = m.other_details
+        skills = m.skills
+
+        passport = m.uploads.passport
+        visa = m.uploads.visa
+        bank_passbook = m.uploads.bank_passbook
+
+
+        name.delete()
+        id_proof.delete()
+        contact_number.delete()
+        temporary_address.delete()
+        permanent_address.delete()
+        emergency_contact.delete()
+
+        pg_degree.delete()
+        bachelors.delete()
+        ssc.delete()
+        intermediate.delete()
+        below_ssc.delete()
+
+        job_profile.job_experience.all().delete()
+        job_profile.delete()
+
+        skills.skill.all().delete()
+        skills.delete()
+
+        passport.delete()
+        bank_passbook.delete()
+        visa.delete()
+
+        other_details.delete()
+
+        messages.success(request, "Maid information has been deleted.")
+        return redirect('/')
+
+    else:
+        messages.error(request, "You do not permission to delete this maid.")
+        return redirect('/')
+
+
+
+
+
 
 
 

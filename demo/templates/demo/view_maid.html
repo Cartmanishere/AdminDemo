@@ -1,0 +1,568 @@
+{% extends 'demo/layout.html' %}
+{% load staticfiles %}
+{% block body %}
+
+	<div class="row">
+        <div class="col s12">
+	         <ul class="tabs tab-demo z-depth-1" style="width: 100%;">
+	         <li class="tab col s2"><a href="#general"  class="active">General Profile</a></li>
+	         <li class="tab col s2"><a href="#education">Educational Profile</a></li>
+	         <li class="tab col s2 "><a href="#job">Job Profile</a></li>
+	         <li class="tab col s2"><a href="#upload">Uploads</a></li>
+	         <li class="tab col s2"><a href="#skills">Skills</a></li>
+	         <li class="tab col s2"><a href="#other">Other Details</a></li>
+	         </ul>
+         </div>
+
+
+		         <!-- general Profile -->
+		        <div id="general" class="col s12">
+			      <div class="card">
+			      		<div class="card-content">
+			        		<div class="row">
+			        		<span class="" style="font-size: 18px"><strong>General</strong></span><br><br />
+			        			<div class="col s4">
+			        				First Name: <b>{{ maid.general_profile.name.first_name }}</b>
+			        			</div>
+			        			<div class="col s4">
+			        				Middle Name: <b>{{ maid.general_profile.name.middle_name }}</b>
+			        			</div>
+			        			<div class="col s4">
+			        				Last Name: <b>{{ maid.general_profile.name.last_name }}</b>
+			        			</div>
+			        		</div>
+
+			        		<div class="row">
+			        			<div class="col s4">
+			        				Age : <b>{{ maid.general_profile.age }}</b>
+			        			</div>
+			        		</div>
+
+			        		<hr/>	<!-- Mobile -->
+			        		<div class="row">
+			        		<span class="" style="font-size: 18px"><strong>Mobile</strong></span><br><br />
+			        			<div class="col s6">
+			        				Mobile 1 : <b>{{ maid.general_profile.contact_number.mobile1 }}</b>
+			        			</div>
+			        			<div class="col s6">
+			        				Mobile 2 : <b>{{ maid.general_profile.contact_number.mobile2 }}</b>
+			        			</div>
+			        		</div>
+			        		<div class="row">
+			        			<div class="col s6">
+			        				Telephone 1 : <b>{{ maid.general_profile.contact_number.telephone1 }}</b>
+			        			</div>
+			        			<div class="col s6">
+			        				Telephone 2 : <b>{{ maid.general_profile.contact_number.telephone2 }}</b>
+			        			</div>
+			        		</div>
+
+
+							<hr/>	<!-- Address -->
+			        		<div class="row">
+			        		<span class="" style="font-size: 18px"><strong>Temporary Address</strong></span><br><br />
+			        			<div class="col s6">
+			        				House No : <b>{{ maid.general_profile.temporary_address.house_no }}</b>
+			        			</div>
+			        			<div class="col s6">
+			        				Street no : <b>{{ maid.general_profile.temporary_address.street_no }}</b>
+			        			</div>
+			        		</div>
+			        		<div class="row">
+			        			<div class="col s6">
+			        				area : <b>{{ maid.general_profile.temporary_address.area }}</b>
+			        			</div>
+			        			<div class="col s6">
+			        				landmark : <b>{{ maid.general_profile.temporary_address.landmark }}</b>
+			        			</div>
+			        		</div>
+			        		<div class="row">
+			        			<div class="col s6">
+			        				At Post : <b>{{ maid.general_profile.temporary_address.at_po }}</b>
+			        			</div>
+			        			<div class="col s6">
+			        				Town : <b>{{ maid.general_profile.temporary_address.town }}</b>
+			        			</div>
+			        		</div>
+			        		<div class="row">
+			        			<div class="col s6">
+			        				District : <b>{{ maid.general_profile.temporary_address.district }}</b>
+			        			</div>
+			        			<div class="col s6">
+			        				State : <b>{{ maid.general_profile.temporary_address.state }}</b>
+			        			</div>
+			        		</div>
+			        		<div class="row">
+			        			<div class="col s6">
+			        				Country : <b>{{ maid.general_profile.temporary_address.country }}</b>
+			        			</div>
+			        			<div class="col s6">
+			        				Google Pin : <b>{{ maid.general_profile.temporary_address.google_pin }}</b>
+			        			</div>
+			        		</div>
+
+
+			        		<hr/>	<!--permanant Address -->
+			        		<div class="row">
+			        		<span class="" style="font-size: 18px"><strong>Permanent Address</strong></span><br><br />
+			        			<div class="col s6">
+			        				House No : <b>{{ maid.general_profile.permanent_address.house_no }}</b>
+			        			</div>
+			        			<div class="col s6">
+			        				Street no : <b>{{ maid.general_profile.permanent_address.street_no }}</b>
+			        			</div>
+			        		</div>
+			        		<div class="row">
+			        			<div class="col s6">
+			        				area : <b>{{ maid.general_profile.permanent_address.area }}</b>
+			        			</div>
+			        			<div class="col s6">
+			        				landmark : <b>{{ maid.general_profile.permanent_address.landmark }}</b>
+			        			</div>
+			        		</div>
+			        		<div class="row">
+			        			<div class="col s6">
+			        				At Post : <b>{{ maid.general_profile.permanent_address.at_po }}</b>
+			        			</div>
+			        			<div class="col s6">
+			        				Town : <b>{{ maid.general_profile.permanent_address.town }}</b>
+			        			</div>
+			        		</div>
+			        		<div class="row">
+			        			<div class="col s6">
+			        				District : <b>{{ maid.general_profile.permanent_address.district }}</b>
+			        			</div>
+			        			<div class="col s6">
+			        				State : <b>{{ maid.general_profile.permanent_address.state }}</b>
+			        			</div>
+			        		</div>
+			        		<div class="row">
+			        			<div class="col s6">
+			        				Country : <b>{{ maid.general_profile.permanent_address.country }}</b>
+			        			</div>
+			        			<div class="col s6">
+			        				Google Pin : <b>{{ maid.general_profile.permanent_address.google_pin }}</b>
+			        			</div>
+			        		</div>
+
+
+			        		<hr/>	<!-- Emergency Contact -->
+			        		<div class="row">
+			        		<span class="" style="font-size: 18px"><strong>Emergency Contact</strong></span><br><br />
+			        			<div class="col s4">
+			        				First Name : <b>{{ maid.general_profile.emergency_contact.first_name }}</b>
+			        			</div>
+			        			<div class="col s4">
+			        				Middle Name : <b>{{ maid.general_profile.emergency_contact.middle_name }}</b>
+			        			</div>
+			        			<div class="col s4">
+			        				Last Name : <b>{{ maid.general_profile.emergency_contact.last_name }}</b>
+			        			</div>
+			        		</div><br/>
+			        		<div class="row">
+			        			<div class="col s6">
+			        				Relation : <b>{{ maid.general_profile.emergency_contact.relation }}</b>
+			        			</div>
+			        			<div class="col s6">
+			        				Contact Number : <b>{{ maid.general_profile.emergency_contact.contact_number }}</b>
+			        			</div>
+			        		</div>
+			        		<div class="row">
+			        			<div class="col s6">
+			        				House Number : <b>{{ maid.general_profile.emergency_contact.house_no }}</b>
+			        			</div>
+			        			<div class="col s6">
+			        				Street Number : <b>{{ maid.general_profile.emergency_contact.street_no }}</b>
+			        			</div>
+			        		</div>
+			        		<div class="row">
+			        			<div class="col s6">
+			        				Area : <b>{{ maid.general_profile.emergency_contact.area }}</b>
+			        			</div>
+			        			<div class="col s6">
+			        				Landmark : <b>{{ maid.general_profile.emergency_contact.landmark }}</b>
+			        			</div>
+			        		</div>
+			        		<div class="row">
+			        			<div class="col s6">
+			        				At Post : <b>{{ maid.general_profile.emergency_contact.at_po }}</b>
+			        			</div>
+			        			<div class="col s6">
+			        				Town : <b>{{ maid.general_profile.emergency_contact.town }}</b>
+			        			</div>
+			        		</div>
+			        		<div class="row">
+			        			<div class="col s6">
+			        				District : <b>{{ maid.general_profile.emergency_contact.district }}</b>
+			        			</div>
+			        			<div class="col s6">
+			        				State : <b>{{ maid.general_profile.emergency_contact.state }}</b>
+			        			</div>
+			        		</div>
+			        		<div class="row">
+			        			<div class="col s6">
+			        				Country : <b>{{ maid.general_profile.emergency_contact.country }}</b>
+			        			</div>
+			        			<div class="col s6">
+			        				Google PIN : <b>{{ maid.general_profile.emergency_contact.google_pin }}</b>
+			        			</div>
+			        		</div>
+
+			        		<hr/>
+			        		<!-- Pwd -->
+			        		<div class="row">
+			        		<span class="" style="font-size: 18px"><strong>Physical Disability</strong></span><br><br />
+			        			<div class="col s8">
+			        				 :<b>{{ maid.general_profile.physical_disability }}</b>
+			        			</div>
+			        		</div>
+
+			        		<hr/>
+			        		<!-- Documents -->
+			        		<div class="row">
+			        			<span class="" style="font-size: 18px"><strong>ID Proofs</strong></span><br><br />
+			        			{% if maid.general_profile.id_proof.aadhar_card.is_there %}
+			        			<div class="col s4">
+			        				Aadhar Card:<br/><br />
+			        				<a class="btn waves-effect waves-light indigo" href="{{ maid.general_profile.id_proof.aadhar_card.url }}" target="_blank">View Image</a>
+			        			</div>
+			        			{% endif %}
+			        			{% if maid.general_profile.id_proof.election_card.is_there %}
+			        			<div class="col s4">
+			        				Election Card:<br/><br />
+			        				<a class="btn waves-effect waves-light indigo" href="{{ maid.general_profile.id_proof.election_card.url }}" target="_blank">View Image</a>
+			        			</div>
+			        			{% endif %}
+			        			{% if maid.general_profile.id_proof.pan_card.is_there %}
+			        			<div class="col s4">
+			        				PAN Card:<br/><br />
+			        				<a class="btn waves-effect waves-light indigo" href="{{ maid.general_profile.id_proof.aadhar_card.url }}" target="_blank">View Image</a>
+			        			</div>
+			        			{% endif %}
+			        		</div>
+
+
+
+			        	</div>
+			        </div>
+		        </div>
+		        <!-- Educational  -->
+		        <div id="education" class="col s12">
+		        	<div class="card">
+			      		<div class="card-content">
+			        		<div class="row">
+			        		<span class="" style="font-size: 18px"><strong>Post Graduation</strong></span><br><br />
+			        			<div class="col s6">
+			        				Specilization : <b>{{ maid.educational_profile.pg_degree.specialization }}</b>
+			        			</div>
+			        			<div class="col s6">
+			        				Year of passing: <b>{{ maid.educational_profile.pg_degree.year_of_passing }}</b>
+			        			</div>
+			        		</div>
+			        		<div class="row">
+			        			<div class="col s6">
+			        				Percentage: <b>{{ maid.educational_profile.pg_degree.percentage }}</b>
+			        			</div>
+			        			<div class="col s6">
+			        				University Name : <b>{{ maid.educational_profile.pg_degree.university_name }}</b>
+			        			</div>
+			        		</div>
+
+			        		<hr/>	<!-- Bachelors -->
+			        		<div class="row">
+			        		<span class="" style="font-size: 18px"><strong>Bachelors</strong></span><br><br />
+			        			<div class="col s6">
+			        				Specilization : <b>{{ maid.educational_profile.bachelors.specialization }}</b>
+			        			</div>
+			        			<div class="col s6">
+			        				Year of passing: <b>{{ maid.educational_profile.bachelors.year_of_passing }}</b>
+			        			</div>
+			        		</div>
+			        		<div class="row">
+			        			<div class="col s6">
+			        				Percentage: <b>{{ maid.educational_profile.bachelors.percentage }}</b>
+			        			</div>
+			        			<div class="col s6">
+			        				University Name : <b>{{ maid.educational_profile.bachelors.university_name }}</b>
+			        			</div>
+			        		</div>
+
+
+							<hr/>	<!-- Intermediate -->
+			        		<div class="row">
+			        		<span class="" style="font-size: 18px"><strong>Intermediate</strong></span><br><br />
+			        			<div class="col s6">
+			        				Year of passing : <b>{{ maid.educational_profile.intermediate.year_of_passing }}</b>
+			        			</div>
+			        			<div class="col s6">
+			        				Percentage : <b>{{ maid.educational_profile.intermediate.percentage }}</b>
+			        			</div>
+			        		</div>
+			        		<div class="row">
+			        			<div class="col s6">
+			        				State Board : <b>{{ maid.educational_profile.intermediate.state_board }}</b>
+			        			</div>
+			        		</div>
+
+
+			        		<hr/>	<!-- Intermediate -->
+			        		<div class="row">
+			        		<span class="" style="font-size: 18px"><strong>SSC</strong></span><br><br />
+			        			<div class="col s6">
+			        				Year of passing : <b>{{ maid.educational_profile.ssc.year_of_passing }}</b>
+			        			</div>
+			        			<div class="col s6">
+			        				Percentage : <b>{{ maid.educational_profile.ssc.percentage }}</b>
+			        			</div>
+			        		</div>
+			        		<div class="row">
+			        			<div class="col s6">
+			        				State Board : <b>{{ maid.educational_profile.ssc.state_board }}</b>
+			        			</div>
+			        		</div>
+
+			        		<hr/>	<!-- Intermediate -->
+			        		<div class="row">
+			        		<span class="" style="font-size: 18px"><strong>Below SSC</strong></span><br><br />
+			        			<div class="col s6">
+			        				Year of passing : <b>{{ maid.educational_profile.below_ssc.year_of_passing }}</b>
+			        			</div>
+			        			<div class="col s6">
+			        				Percentage : <b>{{ maid.educational_profile.below_ssc.percentage }}</b>
+			        			</div>
+			        		</div>
+			        		<div class="row">
+			        			<div class="col s6">
+			        				State Board : <b>{{ maid.educational_profile.below_ssc.state_board }}</b>
+			        			</div>
+			        		</div>
+
+
+			        	</div>
+			        </div>
+
+		        </div>
+
+		        <!-- job -->
+		        <div id="job" class="col s12">
+		        	<div class="card">
+			      		<div class="card-content">
+
+			      		{% for job_profile in maid.job_profile.job_experience.all %}
+
+			        		<div class="row">
+			        			<span class="" style="font-size: 18px"><strong>Job</strong></span><br><br />
+			        			<div class="col s6">
+			        				From year : <b>{{ job_profile.from_year }}</b>
+			        			</div>
+			        			<div class="col s6">
+			        				To year: <b>{{ job_profile.to_year }}</b>
+			        			</div>
+			        		</div>
+			        		<div class="row">
+			        			<div class="col s6">
+			        				Organisation: <b>{{ job_profile.organisation }}</b>
+			        			</div>
+			        			<div class="col s6">
+			        				Total Years : <b>{{ job_profile.total_years }}</b>
+			        			</div>
+			        		</div>
+
+			        		<div class="row">
+			        			<div class="col s6">
+			        				Salary: <b>{{ job_profile.salary }}</b>
+			        			</div>
+			        			<div class="col s6">
+			        				Reason of Leave : <b>{{ job_profile.reason_left }}</b>
+			        			</div>
+			        		</div>
+			        		<hr/>
+			        	{% endfor %}
+
+			        	</div>
+			        </div>
+
+
+		        </div>
+
+		        <!-- upload -->
+		        <div id="upload" class="col s12">
+		        	<div class="card">
+			      		<div class="card-content">
+			        		<div class="row">
+			        			<span class="" style="font-size: 18px"><strong>Passport</strong></span><br><br />
+			        			{% if maid.uploads.passport.front_page.is_there %}
+			        			<div class="col s12 l6 m6">
+			        				Front page :<br /><br />
+			        				<a class="btn waves-effect waves-light indigo" href="{{ maid.uploads.passport.front_page.url }}" target="_blank">View Image</a>
+			        			</div>
+			        			{% endif %}
+			        			{% if maid.uploads.passport.back_page.is_there %}
+			        			<div class="col s6 l6 m6">
+			        				Back page:<br/><br />
+			        				<a class="btn waves-effect waves-light indigo" href="{{ maid.uploads.passport.back_page.url }}" target="_blank">View Image</a>
+			        			</div>
+			        			{% endif %}
+			        		</div>
+
+			        		<div class="row">
+			        			<span class="" style="font-size: 18px"><strong>Bank Passbook</strong></span><br><br />
+			        			{% if maid.uploads.bank_passbook.front_page.is_there %}
+			        			<div class="col s6">
+			        				Front page :<br/><br />
+			        				<a class="btn waves-effect waves-light indigo" href="{{ maid.uploads.bank_passbook.front_page.url }}" target="_blank">View Image</a>
+			        			</div>
+			        			{% endif %}
+			        			{% if maid.uploads.bank_passbook.back_page.is_there %}
+			        			<div class="col s6">
+			        				Back page:<br/><br />
+			        				<a class="btn waves-effect waves-light indigo" href="{{ maid.uploads.bank_passbook.back_page.url }}" target="_blank">View Image</a>
+			        			</div>
+			        			{% endif %}
+			        		</div>
+
+			        		<div class="row">
+			        			<span class="" style="font-size: 18px"><strong>Visa</strong></span><br><br />
+			        			{% if maid.uploads.visa.front_page.is_there %}
+			        			<div class="col s6">
+			        				Front page :<br/><br />
+			        				<a class="btn waves-effect waves-light indigo" href="{{ maid.uploads.visa.front_page.url }}" target="_blank">View Image</a>
+			        			</div>
+			        			{% endif %}
+			        			{% if maid.uploads.visa.back_page.is_there %}
+			        			<div class="col s6">
+			        				Back page:<br/><br />
+			        				<a class="btn waves-effect waves-light indigo" href="{{ maid.uploads.visa.back_page.url }}" target="_blank">View Image</a>
+			        			</div>
+			        			{% endif %}
+			        		</div>
+
+
+			        		<hr/>
+			        		<div class="row">
+			        			<span class="" style="font-size: 18px"><strong>Educational Docs</strong></span><br><br />
+			        			{% if maid.uploads.pg_degree.is_there %}
+			        			<div class="col s4">
+			        				Post Graduation :<br/><br />
+			        				<a class="btn waves-effect waves-light indigo" href="{{ maid.uploads.pg_degree.url }}" target="_blank">View Image</a>
+			        			</div>
+			        			{% endif %}
+			        			{% if maid.uploads.bachelors.is_there %}
+			        			<div class="col s4">
+			        				Bachelors:<br/><br />
+			        				<a class="btn waves-effect waves-light indigo" href="{{ maid.uploads.bachelors.url }}" target="_blank">View Image</a>
+			        			</div>
+			        			{% endif %}
+			        			{% if maid.uploads.intermediate.is_there %}
+			        			<div class="col s4">
+			        				Intermediate:<br/><br />
+			        				<a class="btn waves-effect waves-light indigo" href="{{ maid.uploads.intermediate.url }}" target="_blank">View Image</a>
+			        			</div>
+			        			{% endif %}
+			        		</div>
+			        		<div class="row">
+			        			{% if maid.uploads.ssc.is_there %}
+			        			<div class="col s4">
+			        				SSC:<br/><br />
+			        				<a class="btn waves-effect waves-light indigo" href="{{ maid.uploads.ssc.url }}" target="_blank">View Image</a>
+			        			</div>
+			        			{% endif %}
+			        			{% if maid.uploads.below_ssc.is_there %}
+			        			<div class="col s4">
+			        				Below SSC:<br/><br />
+			        				<a class="btn waves-effect waves-light indigo" href="{{ maid.uploads.below_ssc.url }}" target="_blank">View Image</a>
+			        			</div>
+			        			{% endif %}
+			        		</div>
+
+			        		<hr/>
+			        		<div class="row">
+			        			<span class="" style="font-size: 18px"><strong>ID Docs</strong></span><br><br />
+			        			{% if maid.uploads.signature.is_there %}
+			        			<div class="col s6">
+			        				Signature:<br/><br />
+			        				<a class="btn waves-effect waves-light indigo" href="{{ maid.uploads.signature.url }}" target="_blank">View Image</a>
+			        			</div>
+			        			{% endif %}
+			        			{% if maid.uploads.thumb_impression.is_there %}
+			        			<div class="col s6">
+			        				Thumb Impression:<br/><br />
+			        				<a class="btn waves-effect waves-light indigo" href="{{ maid.uploads.thumb_impression.url }}" target="_blank">View Image</a>
+			        			</div>
+			        			{% endif %}
+			        		</div>
+
+			        		<div class="row">
+			        			{% if maid.uploads.passport_size.is_there %}
+			        			<div class="col s4">
+			        				Passport Photo:<br/><br />
+			        				<a class="btn waves-effect waves-light indigo" href="{{ maid.uploads.passport_size.url }}" target="_blank">View Image</a>
+			        			</div>
+			        			{% endif %}
+			        			{% if maid.uploads.full_body.is_there %}
+			        			<div class="col s4">
+			        				Full Body Photo:<br/><br />
+			        				<a class="btn waves-effect waves-light indigo" href="{{ maid.uploads.full_body.url }}" target="_blank">View Image</a>
+			        			</div>
+			        			{% endif %}
+			        			{% if maid.uploads.medical.is_there %}
+			        			<div class="col s4">
+			        				Medical:<br/><br />
+			        				<a class="btn waves-effect waves-light indigo" href="{{ maid.uploads.medical.url }}" target="_blank">View Image</a>
+			        			</div>
+			        			{% endif %}
+			        		</div>
+
+			        		<div class="row">
+			        			{% if maid.uploads.video %}
+			        			<div class="col s12">
+			        				<video width="320" height="240" controls>
+			        					<source src="{{ maid.uploads.video.url }}" type="video.mp4">
+			        				</video>
+			        			</div>
+			        			{% endif %}
+			        		</div>
+
+
+			        	</div>
+			        </div>
+		        </div>
+
+		        <!-- skills -->
+		        <div id="skills" class="col s12">
+		        	<div class="card">
+		        		<div class="card-content">
+		        			<div class="row">
+
+		        			<!-- {{ maid.skills.values }} -->
+		        			{% for i in maid.skills.values.all %}
+		        				<div class="chip">{{ i.skill }}</div><br/>
+		        			{% endfor %}
+		        			</div>
+		        		</div>
+
+		        	</div>
+		        </div>
+
+		        <!-- others -->
+		        <div id="other" class="col s12">
+		        	<div class="card">
+		        		<div class="card-content">
+		        			<div class="row">
+		        			 	<div class="col s4">
+		        			 		Medical Issue: <b> {{ maid.other_details.medical_issue }} </b>
+		        			 	</div>
+		        			 	<div class="col s4">
+		        			 		Current Salary: <b> {{ maid.other_details.current_salary }} </b>
+		        			 	</div>
+		        			 	<div class="col s4">
+		        			 		Expected Salary: <b> {{ maid.other_details.expected_salary }} </b>
+		        			 	</div>
+		        			</div>
+		        		</div>
+		        	</div>
+		        </div>
+
+    </div>
+
+{% endblock %}
