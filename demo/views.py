@@ -707,6 +707,7 @@ def admin_profile(request):
         admin_profile.id_proof.aadhar_card.is_there = bool(admin_profile.id_proof.aadhar_card)
         admin_profile.id_proof.election_card.is_there = bool(admin_profile.id_proof.election_card)
         admin_profile.id_proof.pan_card.is_there = bool(admin_profile.id_proof.pan_card)
+        admin_profile.passport_size = bool(admin_profile.passport_size)
         return render(request, 'demo/agent/agent_profile.html', {'profile':admin_profile})
 
 
@@ -724,6 +725,7 @@ def agent_profile(request, id=None):
         agent_profile.id_proof.aadhar_card.is_there = bool(agent_profile.id_proof.aadhar_card)
         agent_profile.id_proof.election_card.is_there = bool(agent_profile.id_proof.election_card)
         agent_profile.id_proof.pan_card.is_there = bool(agent_profile.id_proof.pan_card)
+        agent_profile.passport_size = bool(agent_profile.passport_size)
         return render(request, 'demo/agent/agent_profile.html', {'profile': agent_profile})
 
     elif is_admin(request.user):
@@ -738,6 +740,7 @@ def agent_profile(request, id=None):
             agent_profile.id_proof.aadhar_card.is_there = bool(agent_profile.id_proof.aadhar_card)
             agent_profile.id_proof.election_card.is_there = bool(agent_profile.id_proof.election_card)
             agent_profile.id_proof.pan_card.is_there = bool(agent_profile.id_proof.pan_card)
+            agent_profile.passport_size = bool(agent_profile.passport_size)
             return render(request, 'demo/agent/agent_profile.html', {'profile': agent_profile})
 
         else:

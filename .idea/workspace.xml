@@ -2,18 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ab6186f6-cd38-4be2-9158-80b01a57929c" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/templates/demo/agent/agent_profile.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/templates/demo/agent/agent_sign_up.html" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/templates/demo/add_maid.html" afterPath="$PROJECT_DIR$/demo/templates/demo/agent/add_maid.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db.sqlite3" afterPath="$PROJECT_DIR$/db.sqlite3" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AdminDemo/urls.py" afterPath="$PROJECT_DIR$/AdminDemo/urls.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/demo/models.py" afterPath="$PROJECT_DIR$/demo/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/demo/templates/demo/layout.html" afterPath="$PROJECT_DIR$/demo/templates/demo/layout.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/demo/templates/demo/maid_index.html" afterPath="$PROJECT_DIR$/demo/templates/demo/maid_index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/demo/templates/demo/sign_in.html" afterPath="$PROJECT_DIR$/demo/templates/demo/sign_in.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/demo/urls.py" afterPath="$PROJECT_DIR$/demo/urls.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/demo/views.py" afterPath="$PROJECT_DIR$/demo/views.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/demo/templates/demo/admin/admin_sign_up.html" afterPath="$PROJECT_DIR$/demo/templates/demo/admin/admin_sign_up.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/demo/templates/demo/agent/agent_sign_up.html" afterPath="$PROJECT_DIR$/demo/templates/demo/agent/agent_sign_up.html" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -50,11 +40,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/demo/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-132">
-              <caret line="771" column="25" lean-forward="true" selection-start-line="771" selection-start-column="25" selection-end-line="771" selection-end-column="25" />
+            <state relative-caret-position="-49">
+              <caret line="709" column="51" lean-forward="false" selection-start-line="709" selection-start-column="43" selection-end-line="709" selection-end-column="51" />
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
               </folding>
@@ -75,8 +65,8 @@
       <file leaf-file-name="agent_sign_up.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/demo/templates/demo/agent/agent_sign_up.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="25">
-              <caret line="199" column="0" lean-forward="false" selection-start-line="199" selection-start-column="0" selection-end-line="199" selection-end-column="0" />
+            <state relative-caret-position="94">
+              <caret line="94" column="0" lean-forward="false" selection-start-line="94" selection-start-column="0" selection-end-line="94" selection-end-column="0" />
               <folding>
                 <element signature="e#558#581#0#HTML" expanded="true" />
               </folding>
@@ -84,10 +74,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="agent_profile.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="agent_profile.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/demo/templates/demo/agent/agent_profile.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
+            <state relative-caret-position="-75">
               <caret line="135" column="0" lean-forward="false" selection-start-line="135" selection-start-column="0" selection-end-line="135" selection-end-column="0" />
               <folding />
             </state>
@@ -107,8 +97,8 @@
       <file leaf-file-name="admin_sign_up.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/demo/templates/demo/admin/admin_sign_up.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="101">
-              <caret line="77" column="56" lean-forward="false" selection-start-line="77" selection-start-column="49" selection-end-line="77" selection-end-column="56" />
+            <state relative-caret-position="251">
+              <caret line="31" column="87" lean-forward="false" selection-start-line="31" selection-start-column="87" selection-end-line="31" selection-end-column="87" />
               <folding>
                 <element signature="e#558#581#0#HTML" expanded="true" />
               </folding>
@@ -171,7 +161,6 @@
       <find>s6&quot;</find>
       <find>s4&quot;</find>
       <find>profile</find>
-      <find>agent_pr</find>
       <find>maid.general_</find>
       <find>emerg</find>
       <find>admin_pr</find>
@@ -184,6 +173,9 @@
       <find>signup</find>
       <find>AgentProfile</find>
       <find>m.general_profile</find>
+      <find>passwor</find>
+      <find>passw</find>
+      <find>agent_pr</find>
     </findStrings>
     <replaceStrings>
       <replace>s12 m6 l6&quot;</replace>
@@ -212,14 +204,14 @@
         <option value="$PROJECT_DIR$/AdminDemo/urls.py" />
         <option value="$PROJECT_DIR$/demo/templates/demo/sign_in.html" />
         <option value="$PROJECT_DIR$/demo/templates/demo/admin_sign_up.html" />
-        <option value="$PROJECT_DIR$/demo/templates/demo/admin/admin_sign_up.html" />
-        <option value="$PROJECT_DIR$/demo/templates/demo/agent/agent_sign_up.html" />
         <option value="$PROJECT_DIR$/demo/templates/demo/agent/agent_profile.html" />
         <option value="$PROJECT_DIR$/demo/templates/demo/layout.html" />
         <option value="$PROJECT_DIR$/demo/models.py" />
         <option value="$PROJECT_DIR$/demo/urls.py" />
         <option value="$PROJECT_DIR$/demo/templates/demo/maid_index.html" />
         <option value="$PROJECT_DIR$/demo/views.py" />
+        <option value="$PROJECT_DIR$/demo/templates/demo/admin/admin_sign_up.html" />
+        <option value="$PROJECT_DIR$/demo/templates/demo/agent/agent_sign_up.html" />
       </list>
     </option>
   </component>
@@ -316,6 +308,29 @@
               <item name="templates" type="462c0819:PsiDirectoryNode" />
               <item name="demo" type="462c0819:PsiDirectoryNode" />
               <item name="agent" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="AdminDemo" type="b2602c69:ProjectViewProjectNode" />
+              <item name="AdminDemo" type="462c0819:PsiDirectoryNode" />
+              <item name="media" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="AdminDemo" type="b2602c69:ProjectViewProjectNode" />
+              <item name="AdminDemo" type="462c0819:PsiDirectoryNode" />
+              <item name="media" type="462c0819:PsiDirectoryNode" />
+              <item name="admin" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="AdminDemo" type="b2602c69:ProjectViewProjectNode" />
+              <item name="AdminDemo" type="462c0819:PsiDirectoryNode" />
+              <item name="media" type="462c0819:PsiDirectoryNode" />
+              <item name="agent" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="AdminDemo" type="b2602c69:ProjectViewProjectNode" />
+              <item name="AdminDemo" type="462c0819:PsiDirectoryNode" />
+              <item name="media" type="462c0819:PsiDirectoryNode" />
+              <item name="documents" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -789,34 +804,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/demo/templates/demo/agent/agent_sign_up.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="25">
-          <caret line="199" column="0" lean-forward="false" selection-start-line="199" selection-start-column="0" selection-end-line="199" selection-end-column="0" />
-          <folding>
-            <element signature="e#558#581#0#HTML" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/demo/templates/demo/agent/agent_profile.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="135" column="0" lean-forward="false" selection-start-line="135" selection-start-column="0" selection-end-line="135" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/demo/templates/demo/admin/admin_sign_up.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="101">
-          <caret line="77" column="56" lean-forward="false" selection-start-line="77" selection-start-column="49" selection-end-line="77" selection-end-column="56" />
-          <folding>
-            <element signature="e#558#581#0#HTML" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/demo/templates/demo/layout.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="175">
@@ -853,13 +840,41 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/demo/templates/demo/admin/admin_sign_up.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="251">
+          <caret line="31" column="87" lean-forward="false" selection-start-line="31" selection-start-column="87" selection-end-line="31" selection-end-column="87" />
+          <folding>
+            <element signature="e#558#581#0#HTML" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/demo/templates/demo/agent/agent_sign_up.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="94">
+          <caret line="94" column="0" lean-forward="false" selection-start-line="94" selection-start-column="0" selection-end-line="94" selection-end-column="0" />
+          <folding>
+            <element signature="e#558#581#0#HTML" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/demo/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-132">
-          <caret line="771" column="25" lean-forward="true" selection-start-line="771" selection-start-column="25" selection-end-line="771" selection-end-column="25" />
+        <state relative-caret-position="-49">
+          <caret line="709" column="51" lean-forward="false" selection-start-line="709" selection-start-column="43" selection-end-line="709" selection-end-column="51" />
           <folding>
             <element signature="e#0#35#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/demo/templates/demo/agent/agent_profile.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-75">
+          <caret line="135" column="0" lean-forward="false" selection-start-line="135" selection-start-column="0" selection-end-line="135" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
