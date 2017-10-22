@@ -143,7 +143,7 @@ def add_profile(request, u, type=None):
             permanent_address=permanent_address,
         ).save()
 
-def delete_maid(m):
+def maid_delete(m):
     try:
         name = m.general_profile.name
         id_proof = m.general_profile.id_proof
@@ -723,25 +723,20 @@ def delete_maid(request, id):
     request.user.is_agent = is_agent(request.user)
     request.user.is_admin = is_admin(request.user)
     request.user.is_customer = is_customer(request.user)
+    try:
+        m = Maid.objects.get(id=id)
+    except Exception as e:
+        print(e)
+        messages.error(request, "No such maid exists.")
+        return redirect('/')
 
-    if is_agent(request.user) or is_admin(request.user):
-        try:
-            m = Maid.objects.all(id=id)
-        except:
-            messages.error(request, "No such maid exists.")
-            return redirect('/')
-
-        if m.user == request.user:
-            delete_maid(m)
-            messages.success(request, "Maid information has been deleted.")
-            return redirect('/')
-
-        else:
-            messages.error(request, "You do not permission to delete this maid.")
-            return redirect('/')
+    if (is_agent(request.user) and m.user==request.user) or is_admin(request.user):
+        maid_delete(m)
+        messages.success(request, "Maid information has been deleted.")
+        return redirect('/')
 
     else:
-        messages.error(request, "You're not an agent.")
+        messages.error(request, "You do not have permission to delete this maid.")
         return redirect('/')
 
 @login_required(login_url='/login/')
