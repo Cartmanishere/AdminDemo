@@ -11,9 +11,9 @@
                     <p><strong>Age: </strong>&nbsp;&nbsp;&nbsp;{{ i.general_profile.age }}</p>
                 </div>
                 <div class="card-action">
-                    {% if i.user == request.user %}
+                    {% if request.user.is_admin or i.user == request.user %}
                         <a class="modal-trigger waves-effect waves-light btn indigo m-b-xs" href="/view/{{ i.id }}/">View Profile</a>
-                        <a class="modal-trigger waves-effect waves-light btn red m-b-xs" href="/delete/{{ i.id }}">Delete Profile</a>
+                        <a class="modal-trigger waves-effect waves-light btn red m-b-xs" href="/delete/maid/{{ i.id }}">Delete Profile</a>
                     {% else %}
                          <a class="modal-trigger waves-effect waves-light btn indigo m-b-xs" href="/view/{{ i.id }}/">View Profile</a>
                     {% endif %}

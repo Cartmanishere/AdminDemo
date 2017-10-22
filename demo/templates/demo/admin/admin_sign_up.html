@@ -1,0 +1,270 @@
+{% extends 'demo/layout.html' %}
+{% block body %}
+
+    <div class="row">
+        <div class="col s12">
+            <div class="page-title">Admin Information</div>
+        </div>
+        <div class="col s12 m12 l12">
+            <form class="col s12" action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <!-- GENERAL INFORMATION -->
+
+
+                <div class="card">
+                    <div class="card-content">
+
+
+
+
+                    <!-- Name Fields -->
+
+                    <span class="card-title" style="font-size: 18px">General Profile</span><br><br />
+                    <div class="row">
+
+                            <span class="" style="font-size: 18px"><strong>Login Information</strong></span><br><br />
+                            <div class="row">
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="email" id="email" type="email" class="validate">
+                                    <label for="email">Email</label>
+                                </div>
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="password" id="password" type="text" class="validate">
+                                    <label for="password">Password</label>
+                                </div>
+                            </div>
+
+                            <span class="" style="font-size: 18px"><strong>Name Fields</strong></span><br><br />
+                            <div class="row">
+                                <div class="input-field col s12 l4">
+                                    <input name="first_name" id="first_name" type="text" class="validate">
+                                    <label for="first_name">First Name</label>
+                                </div>
+                                <div class="input-field col s12 l4">
+                                    <input name="middle_name" id="middle_name" type="text" class="validate">
+                                    <label for="middle_name">Middle Name</label>
+                                </div>
+                                <div class="input-field col s12 l4">
+                                    <input name="last_name" id="last_name" type="text" class="validate">
+                                    <label for="last_name">Last Name</label>
+                                </div>
+                            </div>
+
+                    <!-- Name Fields End -->
+
+                            <!-- Age -->
+
+                            <span class="" style="font-size: 18px"><strong>Age</strong></span><br><br />
+                            <div class="row">
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="age" id="age" type="number" max="100" min="15" class="validate">
+                                    <label for="age">Age (in Years)</label>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="date_of_birth" id="date_of_birth" type="date" class="validate">
+                                    <label for="date_of_birth">Date of Birth</label>
+                                </div>
+                            </div>
+
+                            <!-- Age ends -->
+                            <!-- Telephone Number -->
+
+                            <span class="" style="font-size: 18px"><strong>Telephone Number</strong></span><br><br />
+                            <div class="row">
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="mobile1" id="mobile1" type="number" maxlength="10" minlength="10" class="validate">
+                                    <label for="mobile1">Mobile 1</label>
+                                </div>
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="mobile2" id="mobile2" type="number" maxlength="10" minlength="10" min="15" class="validate">
+                                    <label for="mobile2">Mobile 2</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="telephone1" id="telephone1" type="number" maxlength="10" minlength="10" class="validate">
+                                    <label for="telephone1">Telephone 1</label>
+                                </div>
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="telephone2" id="telephone2" type="number" maxlength="10" minlength="10" min="15" class="validate">
+                                    <label for="telephone2">Telephone 2</label>
+                                </div>
+                            </div>
+
+                            <!-- Telephone Number ends -->
+                            <!-- Temporary address -->
+
+                            <span class="" style="font-size: 18px"><strong>Temporary Address</strong></span><br><br />
+                            <div class="row">
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="t_house_no" id="t_house_no" type="text" class="validate">
+                                    <label for="t_house_no">House No</label>
+                                </div>
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="t_street_no" id="t_street_no" type="text" class="validate">
+                                    <label for="t_street_no">Street No</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="t_area" id="t_area" type="text" class="validate">
+                                    <label for="t_area">Area</label>
+                                </div>
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="t_landmark" id="t_landmark" type="text" class="validate">
+                                    <label for="t_landmark">Landmark</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="t_at_po" id="t_at_po" type="text" class="validate">
+                                    <label for="t_at_po">At Po.:</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="t_town" id="t_town" type="text" class="validate">
+                                    <label for="t_town">Town</label>
+                                </div>
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="t_district" id="t_district" type="text" class="validate">
+                                    <label for="t_district">District</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="t_state" id="t_state" type="text" class="validate">
+                                    <label for="t_state">State</label>
+                                </div>
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="t_country" id="t_country" type="text" class="validate">
+                                    <label for="t_country">Country</label>
+                                </div>
+                            </div>
+
+                            <!-- Temporary address ends -->
+                            <!-- Permanent Address -->
+
+                            <span class="" style="font-size: 18px"><strong>Permanent Address</strong></span><br><br />
+                            <div class="row">
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="p_house_no" id="p_house_no" type="text" class="validate">
+                                    <label for="p_house_no">House No</label>
+                                </div>
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="p_street_no" id="p_street_no" type="text" class="validate">
+                                    <label for="p_street_no">Street No</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="p_area" id="p_area" type="text" class="validate">
+                                    <label for="p_area">Area</label>
+                                </div>
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="p_landmark" id="p_landmark" type="text" class="validate">
+                                    <label for="p_landmark">Landmark</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12 l6 m6">
+                                    <input name=p_at_po" id="p_at_po" type="text" class="validate">
+                                    <label for="p_at_po">At Po.:</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="p_town" id="p_town" type="text" class="validate">
+                                    <label for="p_town">Town</label>
+                                </div>
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="p_district" id="p_district" type="text" class="validate">
+                                    <label for="p_district">District</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="p_state" id="p_state" type="text" class="validate">
+                                    <label for="p_state">State</label>
+                                </div>
+                                <div class="input-field col s12 l6 m6">
+                                    <input name="p_country" id="p_country" type="text" class="validate">
+                                    <label for="p_country">Country</label>
+                                </div>
+                            </div>
+
+                            <!-- Permanent Addresss ends -->
+
+                            <!-- ID Proof fields -->
+
+                            <span class="" style="font-size: 18px"><strong>ID Proof</strong></span><br><br />
+                            <div class="row">
+                                <div class="col s12 m6 l6">
+                                    <div class="file-field input-field">
+                                        <div class="btn teal lighten-1">
+                                            <span>Aadhar Card</span>
+                                            <input name="aadhar_card" type="file">
+                                        </div>
+                                        <div class="file-path-wrapper">
+                                            <input class="file-path validate" type="text">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col s12 m6 l6">
+                                    <div class="file-field input-field">
+                                        <div class="btn teal lighten-1">
+                                            <span>Election Card</span>
+                                            <input name="election_card" type="file">
+                                        </div>
+                                        <div class="file-path-wrapper">
+                                            <input class="file-path validate" type="text">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col s12 m6 l6">
+                                    <div class="file-field input-field">
+                                        <div class="btn teal lighten-1">
+                                            <span>PAN Card</span>
+                                            <input name="pan_card" type="file">
+                                        </div>
+                                        <div class="file-path-wrapper">
+                                            <input class="file-path validate" type="text">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col s12 m6 l6">
+                                    <div class="file-field input-field">
+                                        <div class="btn teal lighten-1">
+                                            <span>Passport Size Photo</span>
+                                            <input name="passport_size" type="file">
+                                        </div>
+                                        <div class="file-path-wrapper">
+                                            <input class="file-path validate" type="text">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ID Proof ends -->
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12 m12 l12">
+                        <input type="submit" class="waves-effect waves-green btn m-b-xs" value="submit">
+
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+{% endblock %}

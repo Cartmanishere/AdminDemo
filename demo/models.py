@@ -183,4 +183,32 @@ class Maid(models.Model):
         else:
             return self.id
 
+class AdminProfile(models.Model):
+    user = models.OneToOneField(User, null=True, on_delete=None)
+    id_proof = models.OneToOneField(ID_Proof, null=True)
+    name = models.OneToOneField(Name, null=True)
+    age = models.IntegerField(null=True)
+    date_of_birth = models.CharField(max_length=200, null=True)
+    contact_number = models.OneToOneField(Contact_Number, null=True)
+    temporary_address = models.OneToOneField(Temporary_Address, null=True)
+    permanent_address = models.OneToOneField(Permanent_Address, null=True)
+    passport_size = models.ImageField(upload_to='admin/')
+
+    def __str__(self):
+        return self.user.username
+
+class AgentProfile(models.Model):
+    user = models.OneToOneField(User, null=True, on_delete=None)
+    id_proof = models.OneToOneField(ID_Proof, null=True)
+    name = models.OneToOneField(Name, null=True)
+    age = models.IntegerField(null=True)
+    date_of_birth = models.CharField(max_length=200, null=True)
+    contact_number = models.OneToOneField(Contact_Number, null=True)
+    temporary_address = models.OneToOneField(Temporary_Address, null=True)
+    permanent_address = models.OneToOneField(Permanent_Address, null=True)
+    passport_size = models.ImageField(upload_to='agent/')
+
+    def __str__(self):
+        return self.user.username
+
 

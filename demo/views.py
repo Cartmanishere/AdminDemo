@@ -14,39 +14,316 @@ from .models import *
 from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
 
+def is_agent(user):
+    return user.groups.filter(name='Agent').exists()
+
+def is_admin(user):
+    return user.groups.filter(name='Admin').exists() or user.is_superuser
+
+def delete_maid(m):
+    try:
+        name = m.general_profile.name
+        id_proof = m.general_profile.id_proof
+        contact_number = m.general_profile.contact_number
+        temporary_address = m.general_profile.temporary_address
+        permanent_address = m.general_profile.permanent_address
+        emergency_contact = m.general_profile.emergency_contact
+
+        pg_degree = m.educational_profile.pg_degree
+        bachelors = m.educational_profile.bachelors
+        ssc = m.educational_profile.ssc
+        intermediate = m.educational_profile.intermediate
+        below_ssc = m.educational_profile.below_ssc
+
+        job_profile = m.job_profile
+        other_details = m.other_details
+        skills = m.skills
+
+        passport = m.uploads.passport
+        visa = m.uploads.visa
+        bank_passbook = m.uploads.bank_passbook
+
+        name.delete()
+        id_proof.delete()
+        contact_number.delete()
+        temporary_address.delete()
+        permanent_address.delete()
+        emergency_contact.delete()
+
+        pg_degree.delete()
+        bachelors.delete()
+        ssc.delete()
+        intermediate.delete()
+        below_ssc.delete()
+
+        job_profile.job_experience.all().delete()
+        job_profile.delete()
+
+        skills.skill.all().delete()
+        skills.delete()
+
+        passport.delete()
+        bank_passbook.delete()
+        visa.delete()
+
+        other_details.delete()
+
+        return True
+
+    except Exception as e:
+        print(e)
+        return False
+
 def index(request):
     maids = Maid.objects.all()
+    if request.user.is_authenticated:
+        request.user.is_agent = is_agent(request.user)
+        request.user.is_admin = is_admin(request.user)
+
     return render(request, 'demo/maid_index.html', {'maids':maids})
 
-def signup(request):
+@login_required(login_url='/login/')
+def agent_index(request):
+    request.user.is_agent = is_agent(request.user)
+    request.user.is_admin = is_admin(request.user)
+    if request.user.is_admin or request.user.is_superuser:
+        u = User.objects.filter(groups__name="Agent")
+        for i in u:
+            i.no_of_maids = Maid.objects.filter(user=i).count()
+
+        agents = list(u)
+        agents.sort(key=lambda x: x.no_of_maids, reverse=True)
+        return render(request, 'demo/admin/agent_index.html', {'agents': agents})
+    else:
+        messages.error(request, "You do not have permission to view this information.")
+        return redirect('/')
+
+
+def signup_agent(request):
     if request.user.is_authenticated():
         return redirect('/')
     else:
         if request.method == "GET":
-            return render(request, 'demo/sign_up.html', {})
+            return render(request, 'demo/agent/agent_sign_up.html', {})
 
         else:
             email = request.POST['email']
             password = request.POST['password']
+            group = Group.objects.get(name="Agent")
             u = User(username=email, password=password)
             u.set_password(password)
             u.save()
+            u.groups.add(group)
+
+            # name_fields
+            first_name = request.POST.get('first_name', None)
+            last_name = request.POST.get('last_name', None)
+            middle_name = request.POST.get('middle_name', None)
+            # TODO:: Add validation if possible
+            name = Name(
+                first_name=first_name,
+                last_name=last_name,
+                middle_name=middle_name
+            )
+            name.save()
+            # age
+            age = request.POST.get('age', None)
+            date_of_birth = request.POST.get('date_of_birth', None)
+            # telephone number
+            mobile1 = request.POST.get('mobile1', None)
+            mobile2 = request.POST.get('mobile2', None)
+            telephone1 = request.POST.get('telephone1', None)
+            telephone2 = request.POST.get('telephone2', None)
+            contact_number = Contact_Number(
+                mobile1=str(mobile1),
+                mobile2=str(mobile2),
+                telephone1=str(telephone1),
+                telephone2=str(telephone2)
+            )
+            contact_number.save()
+            house_no = request.POST.get('t_house_no', None)
+            street_no = request.POST.get('t_street_no', None)
+            area = request.POST.get('t_area', None)
+            landmark = request.POST.get('t_landmark', None)
+            at_po = request.POST.get('t_at_po', None)
+            town = request.POST.get('t_town', None)
+            district = request.POST.get('t_district', None)
+            state = request.POST.get('t_state', None)
+            country = request.POST.get('t_country', None)
+            temporary_address = Temporary_Address(
+                house_no=house_no,
+                street_no=street_no,
+                area=area,
+                landmark=landmark,
+                at_po=at_po,
+                town=town,
+                district=district,
+                state=state,
+                country=country
+            )
+            temporary_address.save()
+            house_no = request.POST.get('p_house_no', None)
+            street_no = request.POST.get('p_street_no', None)
+            area = request.POST.get('p_area', None)
+            landmark = request.POST.get('p_landmark', None)
+            at_po = request.POST.get('p_at_po', None)
+            town = request.POST.get('p_town', None)
+            district = request.POST.get('p_district', None)
+            state = request.POST.get('p_state', None)
+            country = request.POST.get('p_country', None)
+            permanent_address = Permanent_Address(
+                house_no=house_no,
+                street_no=street_no,
+                area=area,
+                landmark=landmark,
+                at_po=at_po,
+                town=town,
+                district=district,
+                state=state,
+                country=country
+            )
+            permanent_address.save()
+
+            aadhar_card = request.FILES.get('aadhar_card', None)
+            election_card = request.FILES.get('election_card', None)
+            pan_card = request.FILES.get('pan_card', None)
+            id_proof = ID_Proof(
+                aadhar_card=aadhar_card,
+                election_card=election_card,
+                pan_card=pan_card
+            )
+            id_proof.save()
+            passport_size = request.FILES.get('passport_size', None)
+            AgentProfile(
+                user=u,
+                id_proof=id_proof,
+                name=name,
+                age=age,
+                date_of_birth=date_of_birth,
+                contact_number=contact_number,
+                temporary_address=temporary_address,
+                permanent_address=permanent_address,
+                passport_size=passport_size
+            ).save()
+
             user = authenticate(username=email, password=password)
             login(request, user)
-            messages.add_message(request, messages.INFO, "Thank you for signing up!")
-            # if user is not None:
-            #     if user.is_active:
-            #         login(request, user)
-            #         # TODO:: Add redirect to exams page
-            #         return HttpResponse("You have successfully logged in!")
-            #
-            #     else:
-            #         messages.add_message(request, messages.INFO, "Your account has been disabled!")
-            #         # TODO:: Add redirect to login page
-            #         return HttpResponse("Your account is not active.")
-            #
-            # else:
-            #     return HttpResponse("something fucked up when this shouldn't even be possible")
+            messages.success(request, "Thank you for signing up!")
+
+            return redirect('/')
+
+
+def signup_admin(request):
+    if request.user.is_authenticated():
+        return redirect('/')
+    else:
+        if request.method == "GET":
+            return render(request, 'demo/admin/admin_sign_up.html', {})
+
+        else:
+            email = request.POST['email']
+            password = request.POST['password']
+            group = Group.objects.get(name="Admin")
+            u = User(username=email, password=password)
+            u.set_password(password)
+            u.save()
+            u.groups.add(group)
+
+            # name_fields
+            first_name = request.POST.get('first_name', None)
+            last_name = request.POST.get('last_name', None)
+            middle_name = request.POST.get('middle_name', None)
+            # TODO:: Add validation if possible
+            name = Name(
+                first_name=first_name,
+                last_name=last_name,
+                middle_name=middle_name
+            )
+            name.save()
+            # age
+            age = request.POST.get('age', None)
+            date_of_birth = request.POST.get('date_of_birth', None)
+            # telephone number
+            mobile1 = request.POST.get('mobile1', None)
+            mobile2 = request.POST.get('mobile2', None)
+            telephone1 = request.POST.get('telephone1', None)
+            telephone2 = request.POST.get('telephone2', None)
+            contact_number = Contact_Number(
+                mobile1=str(mobile1),
+                mobile2=str(mobile2),
+                telephone1=str(telephone1),
+                telephone2=str(telephone2)
+            )
+            contact_number.save()
+            house_no = request.POST.get('t_house_no', None)
+            street_no = request.POST.get('t_street_no', None)
+            area = request.POST.get('t_area', None)
+            landmark = request.POST.get('t_landmark', None)
+            at_po = request.POST.get('t_at_po', None)
+            town = request.POST.get('t_town', None)
+            district = request.POST.get('t_district', None)
+            state = request.POST.get('t_state', None)
+            country = request.POST.get('t_country', None)
+            temporary_address = Temporary_Address(
+                house_no=house_no,
+                street_no=street_no,
+                area=area,
+                landmark=landmark,
+                at_po=at_po,
+                town=town,
+                district=district,
+                state=state,
+                country=country
+            )
+            temporary_address.save()
+            house_no = request.POST.get('p_house_no', None)
+            street_no = request.POST.get('p_street_no', None)
+            area = request.POST.get('p_area', None)
+            landmark = request.POST.get('p_landmark', None)
+            at_po = request.POST.get('p_at_po', None)
+            town = request.POST.get('p_town', None)
+            district = request.POST.get('p_district', None)
+            state = request.POST.get('p_state', None)
+            country = request.POST.get('p_country', None)
+            permanent_address = Permanent_Address(
+                house_no=house_no,
+                street_no=street_no,
+                area=area,
+                landmark=landmark,
+                at_po=at_po,
+                town=town,
+                district=district,
+                state=state,
+                country=country
+            )
+            permanent_address.save()
+
+            aadhar_card = request.FILES.get('aadhar_card', None)
+            election_card = request.FILES.get('election_card', None)
+            pan_card = request.FILES.get('pan_card', None)
+            id_proof = ID_Proof(
+                aadhar_card=aadhar_card,
+                election_card=election_card,
+                pan_card=pan_card
+            )
+            id_proof.save()
+            passport_size = request.FILES.get('passport_size', None)
+            AdminProfile(
+                user=u,
+                id_proof=id_proof,
+                name=name,
+                age=age,
+                date_of_birth=date_of_birth,
+                contact_number=contact_number,
+                temporary_address=temporary_address,
+                permanent_address=permanent_address,
+                passport_size=passport_size
+            ).save()
+
+            user = authenticate(username=email, password=password)
+            login(request, user)
+            messages.success(request, "Thank you for signing up!")
+
             return redirect('/')
 
 def login_user(request):
@@ -75,284 +352,298 @@ def login_user(request):
 
 @login_required(login_url='/login/')
 def add_maid(request):
+    request.user.is_agent = is_agent(request.user)
+    request.user.is_admin = is_admin(request.user)
     if request.method == "GET":
-        return render(request, 'demo/add_maid.html', {})
+        if is_admin(request.user) or is_agent(request.user):
+            return render(request, 'demo/agent/add_maid.html', {})
+        else:
+            messages.error(request, "You cannot add a maid.")
+            return redirect('/')
 
     #The clusterfuck begins
     if request.method == "POST":
-        #name_fields
-        first_name = request.POST.get('first_name', None)
-        last_name = request.POST.get('last_name', None)
-        middle_name = request.POST.get('middle_name', None)
-        # TODO:: Add validation if possible
-        name = Name(
-            first_name=first_name,
-            last_name=last_name,
-            middle_name=middle_name
-        )
-        name.save()
-        #age
-        age = request.POST.get('age', None)
-        #telephone number
-        mobile1 = request.POST.get('mobile1', None)
-        mobile2 = request.POST.get('mobile2', None)
-        telephone1 = request.POST.get('telephone1', None)
-        telephone2 = request.POST.get('telephone2', None)
-        contact_number = Contact_Number(
-            mobile1=str(mobile1),
-            mobile2=str(mobile2),
-            telephone1=str(telephone1),
-            telephone2=str(telephone2)
-        )
-        contact_number.save()
-        house_no = request.POST.get('t_house_no', None)
-        street_no = request.POST.get('t_street_no', None)
-        area = request.POST.get('t_area', None)
-        landmark = request.POST.get('t_landmark', None)
-        at_po = request.POST.get('t_at_po', None)
-        town = request.POST.get('t_town', None)
-        district = request.POST.get('t_district', None)
-        state = request.POST.get('t_state', None)
-        country = request.POST.get('t_country', None)
-        temporary_address = Temporary_Address(
-            house_no=house_no,
-            street_no=street_no,
-            area=area,
-            landmark=landmark,
-            at_po=at_po,
-            town=town,
-            district=district,
-            state=state,
-            country=country
-        )
-        temporary_address.save()
-        house_no = request.POST.get('p_house_no', None)
-        street_no = request.POST.get('p_street_no', None)
-        area = request.POST.get('p_area', None)
-        landmark = request.POST.get('p_landmark', None)
-        at_po = request.POST.get('p_at_po', None)
-        town = request.POST.get('p_town', None)
-        district = request.POST.get('p_district', None)
-        state = request.POST.get('p_state', None)
-        country = request.POST.get('p_country', None)
-        permanent_address = Permanent_Address(
-            house_no=house_no,
-            street_no=street_no,
-            area=area,
-            landmark=landmark,
-            at_po=at_po,
-            town=town,
-            district=district,
-            state=state,
-            country=country
-        )
-        permanent_address.save()
-        first_name = request.POST.get('e_first_name', None)
-        last_name = request.POST.get('e_last_name', None)
-        middle_name = request.POST.get('e_middle_name', None)
-        relation = request.POST.get('e_rel', None)
-        mobile1 = request.POST.get('e_mobile1', None)
-        mobile2 = request.POST.get('e_mobile2', None)
-        telephone1 = request.POST.get('e_telephone1', None)
-        telephone2 = request.POST.get('e_telephone2', None)
-        house_no = request.POST.get('e_house_no', None)
-        street_no = request.POST.get('e_street_no', None)
-        area = request.POST.get('e_area', None)
-        landmark = request.POST.get('e_landmark', None)
-        at_po = request.POST.get('e_at_po', None)
-        town = request.POST.get('e_town', None)
-        district = request.POST.get('e_district', None)
-        state = request.POST.get('e_state', None)
-        country = request.POST.get('e_country', None)
-        contact_number1 = Contact_Number(
-            mobile1=str(mobile1),
-            mobile2=str(mobile2),
-            telephone1=str(telephone1),
-            telephone2=str(telephone2)
-        )
-        contact_number1.save()
-        emergency_contact = Emergency_Contact(
-            first_name=first_name,
-            last_name=last_name,
-            middle_name=middle_name,
-            relation=relation,
-            contact_number=contact_number1,
-            house_no=house_no,
-            street_no=street_no,
-            area=area,
-            landmark=landmark,
-            at_po=at_po,
-            town=town,
-            district=district,
-            state=state,
-            country=country
-        )
-        emergency_contact.save()
-        aadhar_card = request.FILES.get('aadhar_card', None)
-        election_card = request.FILES.get('election_card', None)
-        pan_card = request.FILES.get('pan_card', None)
-        id_proof = ID_Proof(
-            aadhar_card=aadhar_card,
-            election_card=election_card,
-            pan_card=pan_card
-        )
-        id_proof.save()
-        physical_disability = request.POST.get('physical_disability', None)
-        general_profile = General_Profile(
-            name=name,
-            id_proof=id_proof,
-            age=age,
-            contact_number=contact_number,
-            temporary_address=temporary_address,
-            permanent_address=permanent_address,
-            emergency_contact=emergency_contact,
-            physical_disability=physical_disability
-        )
-        general_profile.save()
-        specialization = request.POST.get('pg_specialization', None)
-        year_of_passing = request.POST.get('pg_year_of_passing', None)
-        percentage = request.POST.get('pg_percentage', None)
-        university_name = request.POST.get('pg_university_name', None)
-        pg_degree = PG_Degree(
-            specialization=specialization,
-            year_of_passing=year_of_passing,
-            percentage=percentage,
-            university_name=university_name
-        )
-        pg_degree.save()
-        specialization = request.POST.get('b_specialization', None)
-        year_of_passing = request.POST.get('b_year_of_passing', None)
-        percentage = request.POST.get('b_percentage', None)
-        university_name = request.POST.get('b_university_name', None)
-        bachelors = Bachelors(
-            specialization=specialization,
-            year_of_passing=year_of_passing,
-            percentage=percentage,
-            university_name=university_name
-        )
-        bachelors.save()
-        year_of_passing = request.POST.get('i_year_of_passing', None)
-        percentage = request.POST.get('i_percentage', None)
-        state_board = request.POST.get('i_state_board', None)
-        intermediate = Intermediate(
-            year_of_passing=year_of_passing,
-            percentage=percentage,
-            state_board=state_board
-        )
-        intermediate.save()
-        year_of_passing = request.POST.get('s_year_of_passing', None)
-        percentage = request.POST.get('s_percentage', None)
-        state_board = request.POST.get('s_state_board', None)
-        ssc = SSC(
-            year_of_passing=year_of_passing,
-            percentage=percentage,
-            state_board=state_board
-        )
-        ssc.save()
-        year_of_passing = request.POST.get('below_ssc_year_of_passing', None)
-        percentage = request.POST.get('below_ssc_percentage', None)
-        state_board = request.POST.get('below_ssc_state_board', None)
-        below_ssc = Below_SSC(
-            year_of_passing=year_of_passing,
-            percentage=percentage,
-            state_board=state_board
-        )
-        below_ssc.save()
-        educational_profile = Educational_Profile(
-            pg_degree=pg_degree,
-            bachelors=bachelors,
-            intermediate=intermediate,
-            ssc=ssc,
-            below_ssc=below_ssc
-        )
-        educational_profile.save()
+        if is_admin(request.user) or is_agent(request.user):
+            #name_fields
+            first_name = request.POST.get('first_name', None)
+            last_name = request.POST.get('last_name', None)
+            middle_name = request.POST.get('middle_name', None)
+            # TODO:: Add validation if possible
+            name = Name(
+                first_name=first_name,
+                last_name=last_name,
+                middle_name=middle_name
+            )
+            name.save()
+            #age
+            age = request.POST.get('age', None)
+            #telephone number
+            mobile1 = request.POST.get('mobile1', None)
+            mobile2 = request.POST.get('mobile2', None)
+            telephone1 = request.POST.get('telephone1', None)
+            telephone2 = request.POST.get('telephone2', None)
+            contact_number = Contact_Number(
+                mobile1=str(mobile1),
+                mobile2=str(mobile2),
+                telephone1=str(telephone1),
+                telephone2=str(telephone2)
+            )
+            contact_number.save()
+            house_no = request.POST.get('t_house_no', None)
+            street_no = request.POST.get('t_street_no', None)
+            area = request.POST.get('t_area', None)
+            landmark = request.POST.get('t_landmark', None)
+            at_po = request.POST.get('t_at_po', None)
+            town = request.POST.get('t_town', None)
+            district = request.POST.get('t_district', None)
+            state = request.POST.get('t_state', None)
+            country = request.POST.get('t_country', None)
+            temporary_address = Temporary_Address(
+                house_no=house_no,
+                street_no=street_no,
+                area=area,
+                landmark=landmark,
+                at_po=at_po,
+                town=town,
+                district=district,
+                state=state,
+                country=country
+            )
+            temporary_address.save()
+            house_no = request.POST.get('p_house_no', None)
+            street_no = request.POST.get('p_street_no', None)
+            area = request.POST.get('p_area', None)
+            landmark = request.POST.get('p_landmark', None)
+            at_po = request.POST.get('p_at_po', None)
+            town = request.POST.get('p_town', None)
+            district = request.POST.get('p_district', None)
+            state = request.POST.get('p_state', None)
+            country = request.POST.get('p_country', None)
+            permanent_address = Permanent_Address(
+                house_no=house_no,
+                street_no=street_no,
+                area=area,
+                landmark=landmark,
+                at_po=at_po,
+                town=town,
+                district=district,
+                state=state,
+                country=country
+            )
+            permanent_address.save()
+            first_name = request.POST.get('e_first_name', None)
+            last_name = request.POST.get('e_last_name', None)
+            middle_name = request.POST.get('e_middle_name', None)
+            relation = request.POST.get('e_rel', None)
+            mobile1 = request.POST.get('e_mobile1', None)
+            mobile2 = request.POST.get('e_mobile2', None)
+            telephone1 = request.POST.get('e_telephone1', None)
+            telephone2 = request.POST.get('e_telephone2', None)
+            house_no = request.POST.get('e_house_no', None)
+            street_no = request.POST.get('e_street_no', None)
+            area = request.POST.get('e_area', None)
+            landmark = request.POST.get('e_landmark', None)
+            at_po = request.POST.get('e_at_po', None)
+            town = request.POST.get('e_town', None)
+            district = request.POST.get('e_district', None)
+            state = request.POST.get('e_state', None)
+            country = request.POST.get('e_country', None)
+            contact_number1 = Contact_Number(
+                mobile1=str(mobile1),
+                mobile2=str(mobile2),
+                telephone1=str(telephone1),
+                telephone2=str(telephone2)
+            )
+            contact_number1.save()
+            emergency_contact = Emergency_Contact(
+                first_name=first_name,
+                last_name=last_name,
+                middle_name=middle_name,
+                relation=relation,
+                contact_number=contact_number1,
+                house_no=house_no,
+                street_no=street_no,
+                area=area,
+                landmark=landmark,
+                at_po=at_po,
+                town=town,
+                district=district,
+                state=state,
+                country=country
+            )
+            emergency_contact.save()
+            aadhar_card = request.FILES.get('aadhar_card', None)
+            election_card = request.FILES.get('election_card', None)
+            pan_card = request.FILES.get('pan_card', None)
+            id_proof = ID_Proof(
+                aadhar_card=aadhar_card,
+                election_card=election_card,
+                pan_card=pan_card
+            )
+            id_proof.save()
+            physical_disability = request.POST.get('physical_disability', None)
+            general_profile = General_Profile(
+                name=name,
+                id_proof=id_proof,
+                age=age,
+                contact_number=contact_number,
+                temporary_address=temporary_address,
+                permanent_address=permanent_address,
+                emergency_contact=emergency_contact,
+                physical_disability=physical_disability
+            )
+            general_profile.save()
+            specialization = request.POST.get('pg_specialization', None)
+            year_of_passing = request.POST.get('pg_year_of_passing', None)
+            percentage = request.POST.get('pg_percentage', None)
+            university_name = request.POST.get('pg_university_name', None)
+            pg_degree = PG_Degree(
+                specialization=specialization,
+                year_of_passing=year_of_passing,
+                percentage=percentage,
+                university_name=university_name
+            )
+            pg_degree.save()
+            specialization = request.POST.get('b_specialization', None)
+            year_of_passing = request.POST.get('b_year_of_passing', None)
+            percentage = request.POST.get('b_percentage', None)
+            university_name = request.POST.get('b_university_name', None)
+            bachelors = Bachelors(
+                specialization=specialization,
+                year_of_passing=year_of_passing,
+                percentage=percentage,
+                university_name=university_name
+            )
+            bachelors.save()
+            year_of_passing = request.POST.get('i_year_of_passing', None)
+            percentage = request.POST.get('i_percentage', None)
+            state_board = request.POST.get('i_state_board', None)
+            intermediate = Intermediate(
+                year_of_passing=year_of_passing,
+                percentage=percentage,
+                state_board=state_board
+            )
+            intermediate.save()
+            year_of_passing = request.POST.get('s_year_of_passing', None)
+            percentage = request.POST.get('s_percentage', None)
+            state_board = request.POST.get('s_state_board', None)
+            ssc = SSC(
+                year_of_passing=year_of_passing,
+                percentage=percentage,
+                state_board=state_board
+            )
+            ssc.save()
+            year_of_passing = request.POST.get('below_ssc_year_of_passing', None)
+            percentage = request.POST.get('below_ssc_percentage', None)
+            state_board = request.POST.get('below_ssc_state_board', None)
+            below_ssc = Below_SSC(
+                year_of_passing=year_of_passing,
+                percentage=percentage,
+                state_board=state_board
+            )
+            below_ssc.save()
+            educational_profile = Educational_Profile(
+                pg_degree=pg_degree,
+                bachelors=bachelors,
+                intermediate=intermediate,
+                ssc=ssc,
+                below_ssc=below_ssc
+            )
+            educational_profile.save()
 
-        job_profile = JobProfile()
-        job_profile.save()
-        job_experience = JobExperience(
-            from_year=request.POST.get('1_from_year', None),
-            to_year=request.POST.get('1_to_year', None),
-            organisation=request.POST.get('1_organisation', None),
-            salary=request.POST.get('1_salary', None),
-            reason_left=request.POST.get('1_reason_left', None)
-        )
-        job_experience.save()
-        job_profile.job_experience.add(job_experience)
-        job_experience = JobExperience(
-            from_year=request.POST.get('2_from_year', None),
-            to_year=request.POST.get('2_to_year', None),
-            organisation=request.POST.get('2_organisation', None),
-            salary=request.POST.get('2_salary', None),
-            reason_left=request.POST.get('2_reason_left', None)
-        )
-        job_experience.save()
-        job_profile.job_experience.add(job_experience)
-        job_profile.save()
-        skills = Skills()
-        skills.save()
-        skills_list = request.POST.getlist('skills', [])
-        for i in skills_list:
-            skill = Skill(skill=i)
-            skill.save()
-            skills.values.add(skill)
+            job_profile = JobProfile()
+            job_profile.save()
+            job_experience = JobExperience(
+                from_year=request.POST.get('1_from_year', None),
+                to_year=request.POST.get('1_to_year', None),
+                organisation=request.POST.get('1_organisation', None),
+                salary=request.POST.get('1_salary', None),
+                reason_left=request.POST.get('1_reason_left', None)
+            )
+            job_experience.save()
+            job_profile.job_experience.add(job_experience)
+            job_experience = JobExperience(
+                from_year=request.POST.get('2_from_year', None),
+                to_year=request.POST.get('2_to_year', None),
+                organisation=request.POST.get('2_organisation', None),
+                salary=request.POST.get('2_salary', None),
+                reason_left=request.POST.get('2_reason_left', None)
+            )
+            job_experience.save()
+            job_profile.job_experience.add(job_experience)
+            job_profile.save()
+            skills = Skills()
+            skills.save()
+            skills_list = request.POST.getlist('skills', [])
+            for i in skills_list:
+                skill = Skill(skill=i)
+                skill.save()
+                skills.values.add(skill)
 
-        skills.save()
-        medical_issues = request.POST.get('medical_issues', None)
-        current_salary = request.POST.get('current_salary', None)
-        expected_salary = request.POST.get('expected_salary', None)
-        other_details = Other_Details(
-            medical_issue=medical_issues,
-            current_salary=current_salary,
-            expected_salary=expected_salary
-        )
-        other_details.save()
+            skills.save()
+            medical_issues = request.POST.get('medical_issues', None)
+            current_salary = request.POST.get('current_salary', None)
+            expected_salary = request.POST.get('expected_salary', None)
+            other_details = Other_Details(
+                medical_issue=medical_issues,
+                current_salary=current_salary,
+                expected_salary=expected_salary
+            )
+            other_details.save()
 
-        passport = Passport(
-            front_page=request.FILES.get('p_front_page', None),
-            back_page= request.FILES.get('p_back_page', None)
-        )
-        passport.save()
-        bank_passbook = Bank_Passbook(
-            front_page=request.FILES.get('b_front_page', None),
-            back_page=request.FILES.get('b_back_page', None)
-        )
-        bank_passbook.save()
-        visa = Visa(
-            front_page=request.FILES.get('v_front_page', None),
-            back_page=request.FILES.get('v_back_page', None)
-        )
-        visa.save()
-        uploads = Uploads(
-            passport=passport,
-            bank_passbook=bank_passbook,
-            visa=visa,
-            pg_degree=request.FILES.get('pg_degree_c', None),
-            bachelors=request.FILES.get('b_certificate', None),
-            intermediate=request.FILES.get('hsc', None),
-            ssc=request.FILES.get('ssc', None),
-            below_ssc=request.FILES.get('below_ssc', None),
-            signature=request.FILES.get('signature', None),
-            thumb_impression=request.FILES.get('thumb', None),
-            passport_size=request.FILES.get('passport_size', None),
-            full_body=request.FILES.get('full_size', None),
-            medical=request.FILES.get('medical', None)
-        )
-        uploads.save()
-        maid = Maid(
-            general_profile=general_profile,
-            educational_profile=educational_profile,
-            job_profile=job_profile,
-            skills=skills,
-            other_details=other_details,
-            uploads=uploads,
-            user=request.user
-        )
-        maid.save()
+            passport = Passport(
+                front_page=request.FILES.get('p_front_page', None),
+                back_page= request.FILES.get('p_back_page', None)
+            )
+            passport.save()
+            bank_passbook = Bank_Passbook(
+                front_page=request.FILES.get('b_front_page', None),
+                back_page=request.FILES.get('b_back_page', None)
+            )
+            bank_passbook.save()
+            visa = Visa(
+                front_page=request.FILES.get('v_front_page', None),
+                back_page=request.FILES.get('v_back_page', None)
+            )
+            visa.save()
+            uploads = Uploads(
+                passport=passport,
+                bank_passbook=bank_passbook,
+                visa=visa,
+                pg_degree=request.FILES.get('pg_degree_c', None),
+                bachelors=request.FILES.get('b_certificate', None),
+                intermediate=request.FILES.get('hsc', None),
+                ssc=request.FILES.get('ssc', None),
+                below_ssc=request.FILES.get('below_ssc', None),
+                signature=request.FILES.get('signature', None),
+                thumb_impression=request.FILES.get('thumb', None),
+                passport_size=request.FILES.get('passport_size', None),
+                full_body=request.FILES.get('full_size', None),
+                medical=request.FILES.get('medical', None)
+            )
+            uploads.save()
+            maid = Maid(
+                general_profile=general_profile,
+                educational_profile=educational_profile,
+                job_profile=job_profile,
+                skills=skills,
+                other_details=other_details,
+                uploads=uploads,
+                user=request.user
+            )
+            maid.save()
 
-        messages.success(request, "Maid has been created.")
-        return redirect('/')
+            messages.success(request, "Maid has been created.")
+            return redirect('/')
+        else:
+            messages.error(request, "You cannot add a maid.")
+            return redirect('/')
+
 
 def view_maid(request, id):
+    if request.user.is_authenticated:
+        request.user.is_agent = is_agent(request.user)
+        request.user.is_admin = is_admin(request.user)
     try:
         maid = Maid.objects.get(id=id)
         maid.general_profile.id_proof.aadhar_card.is_there = bool(maid.general_profile.id_proof.aadhar_card)
@@ -384,68 +675,112 @@ def view_maid(request, id):
 
 @login_required(login_url='/login/')
 def delete_maid(request, id):
-    try:
-        m = Maid.objects.all(id=id)
-    except:
-        messages.error(request, "No such maid exists.")
+    request.user.is_agent = is_agent(request.user)
+    request.user.is_admin = is_admin(request.user)
+
+    if is_agent(request.user) or is_admin(request.user):
+        try:
+            m = Maid.objects.all(id=id)
+        except:
+            messages.error(request, "No such maid exists.")
+            return redirect('/')
+
+        if m.user == request.user:
+            delete_maid(m)
+            messages.success(request, "Maid information has been deleted.")
+            return redirect('/')
+
+        else:
+            messages.error(request, "You do not permission to delete this maid.")
+            return redirect('/')
+
+    else:
+        messages.error(request, "You're not an agent.")
         return redirect('/')
 
-    if m.user == request.user:
-        name = m.general_profile.name
-        id_proof = m.general_profile.id_proof
-        contact_number = m.general_profile.contact_number
-        temporary_address = m.general_profile.temporary_address
-        permanent_address = m.general_profile.permanent_address
-        emergency_contact = m.general_profile.emergency_contact
+@login_required(login_url='/login/')
+def admin_profile(request):
+    request.user.is_agent = is_agent(request.user)
+    request.user.is_admin = is_admin(request.user)
+    if is_admin(request.user):
+        admin_profile = AdminProfile.objects.get(user=request.user)
+        admin_profile.id_proof.aadhar_card.is_there = bool(admin_profile.id_proof.aadhar_card)
+        admin_profile.id_proof.election_card.is_there = bool(admin_profile.id_proof.election_card)
+        admin_profile.id_proof.pan_card.is_there = bool(admin_profile.id_proof.pan_card)
+        return render(request, 'demo/agent/agent_profile.html', {'profile':admin_profile})
 
-        pg_degree = m.educational_profile.pg_degree
-        bachelors = m.educational_profile.bachelors
-        ssc = m.educational_profile.ssc
-        intermediate = m.educational_profile.intermediate
-        below_ssc = m.educational_profile.below_ssc
 
-        job_profile = m.job_profile
-        other_details = m.other_details
-        skills = m.skills
+    else:
+        messages.error(request, "You are not admin.")
+        return redirect('/')
 
-        passport = m.uploads.passport
-        visa = m.uploads.visa
-        bank_passbook = m.uploads.bank_passbook
+@login_required(login_url='/login/')
+def agent_profile(request, id=None):
+    request.user.is_agent = is_agent(request.user)
+    request.user.is_admin = is_admin(request.user)
 
+    if is_agent(request.user):
+        agent_profile = AgentProfile.objects.get(user=request.user)
+        agent_profile.id_proof.aadhar_card.is_there = bool(agent_profile.id_proof.aadhar_card)
+        agent_profile.id_proof.election_card.is_there = bool(agent_profile.id_proof.election_card)
+        agent_profile.id_proof.pan_card.is_there = bool(agent_profile.id_proof.pan_card)
+        return render(request, 'demo/agent/agent_profile.html', {'profile': agent_profile})
+
+    elif is_admin(request.user):
+        if id is not None:
+            try:
+                u = User.objects.get(id=id)
+            except Exception as e:
+                messages.error(request, "Agent does not exist.")
+                return redirect('/')
+
+            agent_profile = AgentProfile.objects.get(user=u)
+            agent_profile.id_proof.aadhar_card.is_there = bool(agent_profile.id_proof.aadhar_card)
+            agent_profile.id_proof.election_card.is_there = bool(agent_profile.id_proof.election_card)
+            agent_profile.id_proof.pan_card.is_there = bool(agent_profile.id_proof.pan_card)
+            return render(request, 'demo/agent/agent_profile.html', {'profile': agent_profile})
+
+        else:
+            messages.error(request, "No agent found.")
+            return redirect('/')
+
+    else:
+        messages.error(request, 'You do not have permission for this.')
+        return redirect('/')
+
+@login_required(login_url='/login/')
+def delete_agent(request, id):
+    if request.user.is_superuser or is_admin(request.user):
+        try:
+            u = User.objects.get(id=id)
+        except Exception as e:
+            messages.error(request, "This user does not exist")
+            return redirect('/')
+
+        profile = AgentProfile.objects.get(user=u)
+        name = profile.name
+        id_proof = profile.id_proof
+        contact_number = profile.contact_number
+        temporary_address = profile.temporary_address
+        permanent_address = profile.permanent_address
+        m = Maid.objects.filter(user=u)
+        for i in m:
+            i.user = None
+            i.save()
 
         name.delete()
         id_proof.delete()
         contact_number.delete()
         temporary_address.delete()
         permanent_address.delete()
-        emergency_contact.delete()
-
-        pg_degree.delete()
-        bachelors.delete()
-        ssc.delete()
-        intermediate.delete()
-        below_ssc.delete()
-
-        job_profile.job_experience.all().delete()
-        job_profile.delete()
-
-        skills.skill.all().delete()
-        skills.delete()
-
-        passport.delete()
-        bank_passbook.delete()
-        visa.delete()
-
-        other_details.delete()
-
-        messages.success(request, "Maid information has been deleted.")
+        u.delete()
+        profile.delete()
+        messages.success(request, "Successfully deleted agent.")
         return redirect('/')
 
     else:
-        messages.error(request, "You do not permission to delete this maid.")
+        messages.error(request, "You have do not permission to do this operation.")
         return redirect('/')
-
-
 
 def logout_user(request):
     if request.user.is_authenticated:
