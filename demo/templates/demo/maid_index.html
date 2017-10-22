@@ -11,26 +11,53 @@
                     <p><strong>Age: </strong>&nbsp;&nbsp;&nbsp;{{ i.general_profile.age }}</p>
                 </div>
                 <div class="card-action">
+                    <a class="waves-effect waves-light btn indigo m-b-xs" href="/view/{{ i.id }}/">View Profile</a>
                     {% if request.user.is_admin or i.user == request.user %}
-                        <a class="modal-trigger waves-effect waves-light btn indigo m-b-xs" href="/view/{{ i.id }}/">View Profile</a>
-                        <a class="modal-trigger waves-effect waves-light btn red m-b-xs" href="/delete/maid/{{ i.id }}">Delete Profile</a>
-                    {% else %}
-                         <a class="modal-trigger waves-effect waves-light btn indigo m-b-xs" href="/view/{{ i.id }}/">View Profile</a>
+                        <a class="waves-effect waves-light btn red m-b-xs" href="/delete/maid/{{ i.id }}">Delete Profile</a>
+                    {% elif request.user.is_customer %}
+                         <a class="modal-trigger waves-effect waves-light btn red m-b-xs" id="{{ i.id }}" onclick="payment(this)" href="#modal1">Request Quote</a>
                     {% endif %}
                 </div>
             </div>
         </div>
     </div>
+
+
+
+    </div>
     {% endfor %}
+        <div id="modal1" class="modal modal-fixed-footer">
+        <div class="modal-content">
+            <h4>Please select your preferred payment option :</h4>
+            <div class="row">
+                <form action="/requests/new/" method="post">
+                    <div class="input-field col s12">
+                        {% csrf_token %}
+                        <input id="id" name="id" value="" class="hide">
+                        <select name="payment_option" required>
+                            <option value="" disabled selected>Choose your option</option>
+                            <option value="Cash">Cash</option>
+                            <option value="Debit Card">Debit Card</option>
+                            <option value="Credit Card">Credit Card</option>
+                            <option value="Online Payment">Online Payment</option>
+                            <option value="Cheque">Cheque</option>
+                        </select>
+                        <label>Payment Options</label>
+                    </div>
+                    <div class="col s12">
+                        <input class="waves-effect waves-light btn indigo m-b-xs" type="submit">
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
     {% endif %}
 
     <script type="text/javascript">
-        function set_url(element){
-            console.log("This function is getting called.")
-            var url = $(element).attr("url");
-            console.log(url)
-            $("#take_exam").attr("href", url);
-            console.log($("#take_exam").attr("href"))
+        function payment(element){
+            var id = $(element).attr("id");
+            $("#id").attr("value", id);
         }
     </script>
 {% endblock %}

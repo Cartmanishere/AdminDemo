@@ -211,4 +211,43 @@ class AgentProfile(models.Model):
     def __str__(self):
         return self.user.username
 
+class CustomerProfile(models.Model):
+    user = models.OneToOneField(User, null=True, on_delete=None)
+    id_proof = models.OneToOneField(ID_Proof, null=True)
+    name = models.OneToOneField(Name, null=True)
+    age = models.IntegerField(null=True)
+    date_of_birth = models.CharField(max_length=200, null=True)
+    contact_number = models.OneToOneField(Contact_Number, null=True)
+    temporary_address = models.OneToOneField(Temporary_Address, null=True)
+    permanent_address = models.OneToOneField(Permanent_Address, null=True)
+    passport_size = models.ImageField(upload_to='agent/')
+
+    def __str__(self):
+        return self.user.username
+
+
+class Request(models.Model):
+    customer = models.ForeignKey(User, on_delete=models.CASCADE)
+    payment_choices = [
+        ('Cash', 'Cash'),
+        ('Credit Card', 'Credit Card'),
+        ('Debit Card', 'Debit Card'),
+        ('Online Payment', 'Online Payment'),
+        ('Cheque', 'Cheque')
+    ]
+    payment_option = models.CharField(max_length=100, choices=payment_choices)
+    maid = models.ForeignKey(Maid, on_delete=models.CASCADE)
+    status_choices = [
+        ('Pending', 'Pending'),
+        ('Accepted', 'Accepted'),
+        ('Rejected', 'Rejected')
+    ]
+    status = models.CharField(max_length=100, choices=status_choices)
+
+    def __str__(self):
+        return self.customer.username
+
+
+
+
 

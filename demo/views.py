@@ -17,8 +17,131 @@ from django.contrib.auth.decorators import login_required, permission_required, 
 def is_agent(user):
     return user.groups.filter(name='Agent').exists()
 
+def is_customer(user):
+    return user.groups.filter(name='Customer').exists()
+
 def is_admin(user):
     return user.groups.filter(name='Admin').exists() or user.is_superuser
+
+
+def add_profile(request, u, type=None):
+    # name_fields
+    first_name = request.POST.get('first_name', None)
+    last_name = request.POST.get('last_name', None)
+    middle_name = request.POST.get('middle_name', None)
+    # TODO:: Add validation if possible
+    name = Name(
+        first_name=first_name,
+        last_name=last_name,
+        middle_name=middle_name
+    )
+    name.save()
+    # age
+    age = request.POST.get('age', None)
+    date_of_birth = request.POST.get('date_of_birth', None)
+    # telephone number
+    mobile1 = request.POST.get('mobile1', None)
+    mobile2 = request.POST.get('mobile2', None)
+    telephone1 = request.POST.get('telephone1', None)
+    telephone2 = request.POST.get('telephone2', None)
+    contact_number = Contact_Number(
+        mobile1=str(mobile1),
+        mobile2=str(mobile2),
+        telephone1=str(telephone1),
+        telephone2=str(telephone2)
+    )
+    contact_number.save()
+    house_no = request.POST.get('t_house_no', None)
+    street_no = request.POST.get('t_street_no', None)
+    area = request.POST.get('t_area', None)
+    landmark = request.POST.get('t_landmark', None)
+    at_po = request.POST.get('t_at_po', None)
+    town = request.POST.get('t_town', None)
+    district = request.POST.get('t_district', None)
+    state = request.POST.get('t_state', None)
+    country = request.POST.get('t_country', None)
+    temporary_address = Temporary_Address(
+        house_no=house_no,
+        street_no=street_no,
+        area=area,
+        landmark=landmark,
+        at_po=at_po,
+        town=town,
+        district=district,
+        state=state,
+        country=country
+    )
+    temporary_address.save()
+    house_no = request.POST.get('p_house_no', None)
+    street_no = request.POST.get('p_street_no', None)
+    area = request.POST.get('p_area', None)
+    landmark = request.POST.get('p_landmark', None)
+    at_po = request.POST.get('p_at_po', None)
+    town = request.POST.get('p_town', None)
+    district = request.POST.get('p_district', None)
+    state = request.POST.get('p_state', None)
+    country = request.POST.get('p_country', None)
+    permanent_address = Permanent_Address(
+        house_no=house_no,
+        street_no=street_no,
+        area=area,
+        landmark=landmark,
+        at_po=at_po,
+        town=town,
+        district=district,
+        state=state,
+        country=country
+    )
+    permanent_address.save()
+
+    aadhar_card = request.FILES.get('aadhar_card', None)
+    election_card = request.FILES.get('election_card', None)
+    pan_card = request.FILES.get('pan_card', None)
+    id_proof = ID_Proof(
+        aadhar_card=aadhar_card,
+        election_card=election_card,
+        pan_card=pan_card
+    )
+    id_proof.save()
+    if type =="admin":
+        passport_size = request.FILES.get('passport_size', None)
+        AdminProfile(
+            user=u,
+            id_proof=id_proof,
+            name=name,
+            age=age,
+            date_of_birth=date_of_birth,
+            contact_number=contact_number,
+            temporary_address=temporary_address,
+            permanent_address=permanent_address,
+            passport_size=passport_size
+        ).save()
+
+    elif type=="agent":
+        passport_size = request.FILES.get('passport_size', None)
+        AgentProfile(
+            user=u,
+            id_proof=id_proof,
+            name=name,
+            age=age,
+            date_of_birth=date_of_birth,
+            contact_number=contact_number,
+            temporary_address=temporary_address,
+            permanent_address=permanent_address,
+            passport_size=passport_size
+        ).save()
+
+    else:
+        CustomerProfile(
+            user=u,
+            id_proof=id_proof,
+            name=name,
+            age=age,
+            date_of_birth=date_of_birth,
+            contact_number=contact_number,
+            temporary_address=temporary_address,
+            permanent_address=permanent_address,
+        ).save()
 
 def delete_maid(m):
     try:
@@ -79,6 +202,7 @@ def index(request):
     if request.user.is_authenticated:
         request.user.is_agent = is_agent(request.user)
         request.user.is_admin = is_admin(request.user)
+        request.user.is_customer = is_customer(request.user)
 
     return render(request, 'demo/maid_index.html', {'maids':maids})
 
@@ -86,6 +210,8 @@ def index(request):
 def agent_index(request):
     request.user.is_agent = is_agent(request.user)
     request.user.is_admin = is_admin(request.user)
+    request.user.is_customer = is_customer(request.user)
+
     if request.user.is_admin or request.user.is_superuser:
         u = User.objects.filter(groups__name="Agent")
         for i in u:
@@ -94,6 +220,74 @@ def agent_index(request):
         agents = list(u)
         agents.sort(key=lambda x: x.no_of_maids, reverse=True)
         return render(request, 'demo/admin/agent_index.html', {'agents': agents})
+    else:
+        messages.error(request, "You do not have permission to view this information.")
+        return redirect('/')
+
+
+@login_required(login_url='/login/')
+def request_index(request):
+    request.user.is_agent = is_agent(request.user)
+    request.user.is_admin = is_admin(request.user)
+    request.user.is_customer = is_customer(request.user)
+
+    if request.user.is_admin or request.user.is_superuser:
+        requests = Request.objects.all()
+
+        return render(request, 'demo/request_index.html', {'requests': requests})
+
+    elif request.user.is_customer:
+        requests = Request.objects.filter(customer=request.user)
+        return render(request, 'demo/request_index.html', {'requests': requests})
+
+    elif request.user.is_agent:
+        maids = Maid.objects.filter(user=request.user)
+        requests =[]
+        for i in maids:
+            requests += list(Request.objects.filter(maid=i))
+
+        return render(request, 'demo/request_index.html', {'requests': requests})
+
+
+@login_required(login_url='/login/')
+def request_add(request):
+    request.user.is_agent = is_agent(request.user)
+    request.user.is_admin = is_admin(request.user)
+    request.user.is_customer = is_customer(request.user)
+    if request.user.is_customer:
+        id = request.POST.get('id')
+        if id=="" or id==None:
+            messages.error(request, "There was some error. Please try again.")
+            return redirect('/')
+
+        try:
+            m = Maid.objects.get(id=int(id))
+        except Exception:
+            messages.error(request, "Maid does not exist.")
+            return redirect('/')
+
+        r = Request(
+            customer=request.user,
+            maid=m,
+            payment_option=request.POST.get('payment_option'),
+            status="Pending"
+        ).save()
+
+        messages.success(request, "Successfully requested quote. You can view this in requests section in the side menu.")
+        return redirect('/')
+
+    else:
+        messages.error(request, "You cannot request a quote.")
+        return redirect('/')
+
+@login_required(login_url='/login/')
+def customer_index(request):
+    request.user.is_agent = is_agent(request.user)
+    request.user.is_admin = is_admin(request.user)
+    request.user.is_customer = is_customer(request.user)
+    if request.user.is_admin or request.user.is_superuser:
+        u = User.objects.filter(groups__name="Customer")
+        return render(request, 'demo/admin/customer_index.html', {'customers': u})
     else:
         messages.error(request, "You do not have permission to view this information.")
         return redirect('/')
@@ -115,96 +309,7 @@ def signup_agent(request):
             u.save()
             u.groups.add(group)
 
-            # name_fields
-            first_name = request.POST.get('first_name', None)
-            last_name = request.POST.get('last_name', None)
-            middle_name = request.POST.get('middle_name', None)
-            # TODO:: Add validation if possible
-            name = Name(
-                first_name=first_name,
-                last_name=last_name,
-                middle_name=middle_name
-            )
-            name.save()
-            # age
-            age = request.POST.get('age', None)
-            date_of_birth = request.POST.get('date_of_birth', None)
-            # telephone number
-            mobile1 = request.POST.get('mobile1', None)
-            mobile2 = request.POST.get('mobile2', None)
-            telephone1 = request.POST.get('telephone1', None)
-            telephone2 = request.POST.get('telephone2', None)
-            contact_number = Contact_Number(
-                mobile1=str(mobile1),
-                mobile2=str(mobile2),
-                telephone1=str(telephone1),
-                telephone2=str(telephone2)
-            )
-            contact_number.save()
-            house_no = request.POST.get('t_house_no', None)
-            street_no = request.POST.get('t_street_no', None)
-            area = request.POST.get('t_area', None)
-            landmark = request.POST.get('t_landmark', None)
-            at_po = request.POST.get('t_at_po', None)
-            town = request.POST.get('t_town', None)
-            district = request.POST.get('t_district', None)
-            state = request.POST.get('t_state', None)
-            country = request.POST.get('t_country', None)
-            temporary_address = Temporary_Address(
-                house_no=house_no,
-                street_no=street_no,
-                area=area,
-                landmark=landmark,
-                at_po=at_po,
-                town=town,
-                district=district,
-                state=state,
-                country=country
-            )
-            temporary_address.save()
-            house_no = request.POST.get('p_house_no', None)
-            street_no = request.POST.get('p_street_no', None)
-            area = request.POST.get('p_area', None)
-            landmark = request.POST.get('p_landmark', None)
-            at_po = request.POST.get('p_at_po', None)
-            town = request.POST.get('p_town', None)
-            district = request.POST.get('p_district', None)
-            state = request.POST.get('p_state', None)
-            country = request.POST.get('p_country', None)
-            permanent_address = Permanent_Address(
-                house_no=house_no,
-                street_no=street_no,
-                area=area,
-                landmark=landmark,
-                at_po=at_po,
-                town=town,
-                district=district,
-                state=state,
-                country=country
-            )
-            permanent_address.save()
-
-            aadhar_card = request.FILES.get('aadhar_card', None)
-            election_card = request.FILES.get('election_card', None)
-            pan_card = request.FILES.get('pan_card', None)
-            id_proof = ID_Proof(
-                aadhar_card=aadhar_card,
-                election_card=election_card,
-                pan_card=pan_card
-            )
-            id_proof.save()
-            passport_size = request.FILES.get('passport_size', None)
-            AgentProfile(
-                user=u,
-                id_proof=id_proof,
-                name=name,
-                age=age,
-                date_of_birth=date_of_birth,
-                contact_number=contact_number,
-                temporary_address=temporary_address,
-                permanent_address=permanent_address,
-                passport_size=passport_size
-            ).save()
+            add_profile(request, u, type="agent")
 
             user = authenticate(username=email, password=password)
             login(request, user)
@@ -229,96 +334,33 @@ def signup_admin(request):
             u.save()
             u.groups.add(group)
 
-            # name_fields
-            first_name = request.POST.get('first_name', None)
-            last_name = request.POST.get('last_name', None)
-            middle_name = request.POST.get('middle_name', None)
-            # TODO:: Add validation if possible
-            name = Name(
-                first_name=first_name,
-                last_name=last_name,
-                middle_name=middle_name
-            )
-            name.save()
-            # age
-            age = request.POST.get('age', None)
-            date_of_birth = request.POST.get('date_of_birth', None)
-            # telephone number
-            mobile1 = request.POST.get('mobile1', None)
-            mobile2 = request.POST.get('mobile2', None)
-            telephone1 = request.POST.get('telephone1', None)
-            telephone2 = request.POST.get('telephone2', None)
-            contact_number = Contact_Number(
-                mobile1=str(mobile1),
-                mobile2=str(mobile2),
-                telephone1=str(telephone1),
-                telephone2=str(telephone2)
-            )
-            contact_number.save()
-            house_no = request.POST.get('t_house_no', None)
-            street_no = request.POST.get('t_street_no', None)
-            area = request.POST.get('t_area', None)
-            landmark = request.POST.get('t_landmark', None)
-            at_po = request.POST.get('t_at_po', None)
-            town = request.POST.get('t_town', None)
-            district = request.POST.get('t_district', None)
-            state = request.POST.get('t_state', None)
-            country = request.POST.get('t_country', None)
-            temporary_address = Temporary_Address(
-                house_no=house_no,
-                street_no=street_no,
-                area=area,
-                landmark=landmark,
-                at_po=at_po,
-                town=town,
-                district=district,
-                state=state,
-                country=country
-            )
-            temporary_address.save()
-            house_no = request.POST.get('p_house_no', None)
-            street_no = request.POST.get('p_street_no', None)
-            area = request.POST.get('p_area', None)
-            landmark = request.POST.get('p_landmark', None)
-            at_po = request.POST.get('p_at_po', None)
-            town = request.POST.get('p_town', None)
-            district = request.POST.get('p_district', None)
-            state = request.POST.get('p_state', None)
-            country = request.POST.get('p_country', None)
-            permanent_address = Permanent_Address(
-                house_no=house_no,
-                street_no=street_no,
-                area=area,
-                landmark=landmark,
-                at_po=at_po,
-                town=town,
-                district=district,
-                state=state,
-                country=country
-            )
-            permanent_address.save()
+            add_profile(request, u, type="admin")
 
-            aadhar_card = request.FILES.get('aadhar_card', None)
-            election_card = request.FILES.get('election_card', None)
-            pan_card = request.FILES.get('pan_card', None)
-            id_proof = ID_Proof(
-                aadhar_card=aadhar_card,
-                election_card=election_card,
-                pan_card=pan_card
-            )
-            id_proof.save()
-            passport_size = request.FILES.get('passport_size', None)
-            AdminProfile(
-                user=u,
-                id_proof=id_proof,
-                name=name,
-                age=age,
-                date_of_birth=date_of_birth,
-                contact_number=contact_number,
-                temporary_address=temporary_address,
-                permanent_address=permanent_address,
-                passport_size=passport_size
-            ).save()
+
+            user = authenticate(username=email, password=password)
+            login(request, user)
+            messages.success(request, "Thank you for signing up!")
+
+            return redirect('/')
+
+def signup_customer(request):
+    if request.user.is_authenticated():
+        return redirect('/')
+    else:
+        if request.method == "GET":
+            return render(request, 'demo/customer/customer_sign_up.html', {})
+
+        else:
+            email = request.POST['email']
+            password = request.POST['password']
+            group = Group.objects.get(name="Customer")
+            u = User(username=email, password=password)
+            u.set_password(password)
+            u.save()
+            u.groups.add(group)
+
+            add_profile(request, u, type="customer")
+
 
             user = authenticate(username=email, password=password)
             login(request, user)
@@ -354,6 +396,7 @@ def login_user(request):
 def add_maid(request):
     request.user.is_agent = is_agent(request.user)
     request.user.is_admin = is_admin(request.user)
+    request.user.is_customer = is_customer(request.user)
     if request.method == "GET":
         if is_admin(request.user) or is_agent(request.user):
             return render(request, 'demo/agent/add_maid.html', {})
@@ -643,7 +686,9 @@ def add_maid(request):
 def view_maid(request, id):
     if request.user.is_authenticated:
         request.user.is_agent = is_agent(request.user)
+        request.user.is_agent = is_agent(request.user)
         request.user.is_admin = is_admin(request.user)
+        request.user.is_customer = is_customer(request.user)
     try:
         maid = Maid.objects.get(id=id)
         maid.general_profile.id_proof.aadhar_card.is_there = bool(maid.general_profile.id_proof.aadhar_card)
@@ -677,6 +722,7 @@ def view_maid(request, id):
 def delete_maid(request, id):
     request.user.is_agent = is_agent(request.user)
     request.user.is_admin = is_admin(request.user)
+    request.user.is_customer = is_customer(request.user)
 
     if is_agent(request.user) or is_admin(request.user):
         try:
@@ -702,6 +748,7 @@ def delete_maid(request, id):
 def admin_profile(request):
     request.user.is_agent = is_agent(request.user)
     request.user.is_admin = is_admin(request.user)
+    request.user.is_customer = is_customer(request.user)
     if is_admin(request.user):
         admin_profile = AdminProfile.objects.get(user=request.user)
         admin_profile.id_proof.aadhar_card.is_there = bool(admin_profile.id_proof.aadhar_card)
@@ -719,6 +766,7 @@ def admin_profile(request):
 def agent_profile(request, id=None):
     request.user.is_agent = is_agent(request.user)
     request.user.is_admin = is_admin(request.user)
+    request.user.is_customer = is_customer(request.user)
 
     if is_agent(request.user):
         agent_profile = AgentProfile.objects.get(user=request.user)
@@ -742,6 +790,41 @@ def agent_profile(request, id=None):
             agent_profile.id_proof.pan_card.is_there = bool(agent_profile.id_proof.pan_card)
             agent_profile.passport_size = bool(agent_profile.passport_size)
             return render(request, 'demo/agent/agent_profile.html', {'profile': agent_profile})
+
+        else:
+            messages.error(request, "No agent found.")
+            return redirect('/')
+
+    else:
+        messages.error(request, 'You do not have permission for this.')
+        return redirect('/')
+
+@login_required(login_url='/login/')
+def customer_profile(request, id=None):
+    request.user.is_agent = is_agent(request.user)
+    request.user.is_admin = is_admin(request.user)
+    request.user.is_customer = is_customer(request.user)
+
+    if is_agent(request.user):
+        customer_profile = CustomerProfile.objects.get(user=request.user)
+        customer_profile.id_proof.aadhar_card.is_there = bool(customer_profile.id_proof.aadhar_card)
+        customer_profile.id_proof.election_card.is_there = bool(customer_profile.id_proof.election_card)
+        customer_profile.id_proof.pan_card.is_there = bool(customer_profile.id_proof.pan_card)
+        return render(request, 'demo/agent/customer_profile.html', {'profile': customer_profile})
+
+    elif is_admin(request.user):
+        if id is not None:
+            try:
+                u = User.objects.get(id=id)
+            except Exception as e:
+                messages.error(request, "Customer does not exist.")
+                return redirect('/')
+
+            customer_profile = CustomerProfile.objects.get(user=u)
+            customer_profile.id_proof.aadhar_card.is_there = bool(customer_profile.id_proof.aadhar_card)
+            customer_profile.id_proof.election_card.is_there = bool(customer_profile.id_proof.election_card)
+            customer_profile.id_proof.pan_card.is_there = bool(customer_profile.id_proof.pan_card)
+            return render(request, 'demo/agent/agent_profile.html', {'profile': customer_profile})
 
         else:
             messages.error(request, "No agent found.")
@@ -783,6 +866,87 @@ def delete_agent(request, id):
 
     else:
         messages.error(request, "You have do not permission to do this operation.")
+        return redirect('/')
+
+
+@login_required(login_url='/login/')
+def delete_customer(request, id):
+    if request.user.is_superuser or is_admin(request.user):
+        try:
+            u = User.objects.get(id=id)
+        except Exception as e:
+            messages.error(request, "This user does not exist")
+            return redirect('/')
+
+        profile = CustomerProfile.objects.get(user=u)
+        name = profile.name
+        id_proof = profile.id_proof
+        contact_number = profile.contact_number
+        temporary_address = profile.temporary_address
+        permanent_address = profile.permanent_address
+        ## Delete Reuqests
+
+        name.delete()
+        id_proof.delete()
+        contact_number.delete()
+        temporary_address.delete()
+        permanent_address.delete()
+        u.delete()
+        profile.delete()
+        messages.success(request, "Successfully deleted customer.")
+        return redirect('/')
+
+    else:
+        messages.error(request, "You have do not permission to do this operation.")
+        return redirect('/')
+
+
+@login_required(login_url='/login/')
+def delete_request(request, id):
+    try:
+        u = Request.objects.get(id=id)
+    except Exception as e:
+        messages.error(request, "This request does not exist")
+        return redirect('/')
+
+    if request.user.is_superuser or is_admin(request.user) or u.customer==request.user:
+        u.delete()
+
+        messages.success(request, "Successfully deleted request.")
+        return redirect('/')
+
+    else:
+        messages.error(request, "You have do not permission to do this operation.")
+        return redirect('/')
+
+@login_required(login_url='/login/')
+def status_change(request):
+    request.user.is_agent = is_agent(request.user)
+    request.user.is_admin = is_admin(request.user)
+    request.user.is_customer = is_customer(request.user)
+    try:
+        id = request.POST.get('id')
+        print(id)
+        r = Request.objects.get(id=int(id))
+
+    except Exception as e:
+        messages.error(request, "This request does not exist")
+        print(e)
+        return redirect('/')
+    if request.user.is_agent:
+        maids = Maid.objects.filter(user=request.user)
+    else:
+        maids = None
+
+    if request.user.is_admin or request.user.is_superuser or (request.user.is_agent and r.maid in maids):
+        status = request.POST.get('status')
+        r.status = status
+        r.save()
+        messages.success(request, "Request status changed.")
+        return redirect('/requests/')
+
+    else:
+        messages.error(request, "You do not have permission to do this operation.")
         return redirect('/')
 
 def logout_user(request):

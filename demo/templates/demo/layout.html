@@ -134,13 +134,23 @@
                     </div>
 
                 <ul class="sidebar-menu collapsible collapsible-accordion" data-collapsible="accordion">
-                    {% if request.user.is_admin or request.user.is_superuser or request.user.is_agent%}
+                    <li class="no-padding">
+                        <a href="/" class="collapsible-header waves-effect waves-grey"><i class="material-icons">input</i>Maids</a>
+                    </li>
+                    {% if request.user.is_admin or request.user.is_superuser or request.user.is_agent %}
+
                     <li class="no-padding">
                         <a href="/add_maid/" class="collapsible-header waves-effect waves-grey"><i class="material-icons">rate_review</i>Add Maid</a>
                     </li>
                     {% if request.user.is_admin or request.user.is_superuser %}
                         <li class="no-padding">
                             <a href="/agents/" class="collapsible-header waves-effect waves-grey"><i class="material-icons">person</i>Agents</a>
+                        </li>
+                        <li class="no-padding">
+                            <a href="/customers/" class="collapsible-header waves-effect waves-grey"><i class="material-icons">person</i>Customers</a>
+                        </li>
+                        <li class="no-padding">
+                            <a href="/requests/" class="collapsible-header waves-effect waves-grey"><i class="material-icons">input</i>Requests</a>
                         </li>
                     {% endif %}
                     {% if request.user.is_admin %}
@@ -149,12 +159,22 @@
                         </li>
                     {% elif request.user.is_agent %}
                         <li class="no-padding">
+                            <a href="/requests/" class="collapsible-header waves-effect waves-grey"><i class="material-icons">input</i>Requests</a>
+                        </li>
+                        <li class="no-padding">
                             <a href="/profile/agent/" class="collapsible-header waves-effect waves-grey"><i class="material-icons">perm_identity</i>Profile</a>
                         </li>
                     {% endif %}
                     <li class="no-padding">
                         <a href="/logout/" class="collapsible-header waves-effect waves-grey"><i class="material-icons">close</i>Sign Out</a>
                     </li>
+                    {% elif request.user.is_customer %}
+                        <li class="no-padding">
+                            <a href="/requests/" class="collapsible-header waves-effect waves-grey"><i class="material-icons">input</i>Requests</a>
+                        </li>
+                        <li class="no-padding">
+                            <a href="/logout/" class="collapsible-header waves-effect waves-grey"><i class="material-icons">input</i>Logout</a>
+                        </li>
                     {% else %}
                      <li class="no-padding">
                         <a href="/login/" class="collapsible-header waves-effect waves-grey"><i class="material-icons">input</i>Login</a>
@@ -164,6 +184,9 @@
                     </li>
                      <li class="no-padding">
                         <a href="/signup/agent/" class="collapsible-header waves-effect waves-grey"><i class="material-icons">open_in_new</i>Agent SignUp</a>
+                    </li>
+                    <li class="no-padding">
+                        <a href="/signup/customer/" class="collapsible-header waves-effect waves-grey"><i class="material-icons">open_in_new</i>Customer SignUp</a>
                     </li>
                     {% endif %}
 {#                    <li class="no-padding">#}
