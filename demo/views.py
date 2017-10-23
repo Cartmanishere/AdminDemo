@@ -471,6 +471,8 @@ def login_user(request):
                 messages.add_message(request, messages.ERROR, "Invalid Password/Username.")
                 return redirect('/login/')
 
+
+
 @login_required(login_url='/login/')
 def add_maid(request):
     request.user.is_agent = is_agent(request.user)
@@ -483,7 +485,6 @@ def add_maid(request):
             messages.error(request, "You cannot add a maid.")
             return redirect('/')
 
-    #The clusterfuck begins
     if request.method == "POST":
         if is_admin(request.user) or is_agent(request.user):
             #name_fields

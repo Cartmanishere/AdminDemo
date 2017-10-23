@@ -2,21 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ab6186f6-cd38-4be2-9158-80b01a57929c" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/demo/templates/demo/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db.sqlite3" afterPath="$PROJECT_DIR$/db.sqlite3" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/media/1340433133397.jpg" afterPath="$PROJECT_DIR$/media/1340433133397.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/demo/models.py" afterPath="$PROJECT_DIR$/demo/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/demo/templates/demo/admin/agent_index.html" afterPath="$PROJECT_DIR$/demo/templates/demo/admin/agent_index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/demo/templates/demo/admin/customer_index.html" afterPath="$PROJECT_DIR$/demo/templates/demo/admin/customer_index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/demo/templates/demo/agent/agent_profile.html" afterPath="$PROJECT_DIR$/demo/templates/demo/agent/agent_profile.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/demo/templates/demo/customer/customer_sign_up.html" afterPath="$PROJECT_DIR$/demo/templates/demo/customer/customer_sign_up.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/demo/templates/demo/layout.html" afterPath="$PROJECT_DIR$/demo/templates/demo/layout.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/demo/templates/demo/maid_index.html" afterPath="$PROJECT_DIR$/demo/templates/demo/maid_index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/demo/templates/demo/request_index.html" afterPath="$PROJECT_DIR$/demo/templates/demo/request_index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/demo/templates/demo/sign_in.html" afterPath="$PROJECT_DIR$/demo/templates/demo/sign_in.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/demo/templates/demo/view_maid.html" afterPath="$PROJECT_DIR$/demo/templates/demo/view_maid.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/demo/urls.py" afterPath="$PROJECT_DIR$/demo/urls.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/demo/views.py" afterPath="$PROJECT_DIR$/demo/views.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -66,14 +53,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/demo/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="276">
-              <caret line="467" column="44" lean-forward="false" selection-start-line="467" selection-start-column="44" selection-end-line="467" selection-end-column="44" />
+            <state relative-caret-position="251">
+              <caret line="487" column="0" lean-forward="false" selection-start-line="487" selection-start-column="0" selection-end-line="487" selection-end-column="0" />
               <folding>
                 <element signature="e#0#72#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="9" lean-forward="true" selection-start-line="0" selection-start-column="9" selection-end-line="0" selection-end-column="9" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -140,7 +137,6 @@
       <find>uploads</find>
       <find>main</find>
       <find>login</find>
-      <find>login_user</find>
       <find>agent</find>
       <find>index</find>
       <find>signup_agent</find>
@@ -150,6 +146,7 @@
       <find>index_gent</find>
       <find>signup_cu</find>
       <find>signup_admin</find>
+      <find>login_user</find>
     </findStrings>
     <replaceStrings>
       <replace>s12 m6 l6&quot;</replace>
@@ -195,6 +192,7 @@
         <option value="$PROJECT_DIR$/demo/templates/demo/layout.html" />
         <option value="$PROJECT_DIR$/demo/urls.py" />
         <option value="$PROJECT_DIR$/demo/views.py" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -388,7 +386,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/demo/views.py</url>
-          <line>1020</line>
+          <line>1021</line>
         </line-breakpoint>
       </breakpoints>
       <option name="time" value="1" />
@@ -655,13 +653,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/AdminDemo/urls.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="317">
@@ -816,11 +807,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/demo/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="276">
-          <caret line="467" column="44" lean-forward="false" selection-start-line="467" selection-start-column="44" selection-end-line="467" selection-end-column="44" />
+        <state relative-caret-position="251">
+          <caret line="487" column="0" lean-forward="false" selection-start-line="487" selection-start-column="0" selection-end-line="487" selection-end-column="0" />
           <folding>
             <element signature="e#0#72#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="9" lean-forward="true" selection-start-line="0" selection-start-column="9" selection-end-line="0" selection-end-column="9" />
+          <folding />
         </state>
       </provider>
     </entry>
