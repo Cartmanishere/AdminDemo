@@ -4,7 +4,7 @@
 <head>
         {% load static %}
         <!-- Title -->
-        <title>Admin Demo</title>
+        <title>Admin Panel</title>
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
         <meta charset="UTF-8">
@@ -112,7 +112,14 @@
                             </a>
                         </section>
                         <div class="header-title col s12 m12 center-align">
-                            <span class="chapter-title">Admin Demo</span>
+                            <span class="f-bold" style="font-size: 30px">
+                                {% if request.user.is_admin %}
+                                ADMIN PANEL
+                                {% else %}
+                                AGENT PANEL
+                                {% endif %}
+
+                            </span>
                         </div>
 
 
@@ -127,6 +134,7 @@
                         <div class="sidebar-profile-info">
                                 {% if user_profile %}
                                 <p>{{ user_profile.name }}</p>
+
                                 <span>{{ user_profile.user.username }}</span>
                                 {% endif %}
                             </a>
@@ -134,60 +142,64 @@
                     </div>
 
                 <ul class="sidebar-menu collapsible collapsible-accordion" data-collapsible="accordion">
+
+                    {% if request.user.is_admin or request.user.is_superuser %}
                     <li class="no-padding">
-                        <a href="/" class="collapsible-header waves-effect waves-grey"><i class="material-icons">input</i>Maids</a>
+                        <a href="/admin/add_maid/" class="collapsible-header waves-effect waves-grey"><i class="material-icons">rate_review</i><b>Add Maid</b></a>
                     </li>
-                    {% if request.user.is_admin or request.user.is_superuser or request.user.is_agent %}
+                    <li class="no-padding">
+                        <a href="/admin/" class="collapsible-header waves-effect waves-grey"><i class="material-icons">input</i><b>View &amp; Delete Maid</b></a>
+                    </li>
+                    <li class="no-padding">
+                        <a href="/admin/add_agent/" class="collapsible-header waves-effect waves-grey"><i class="material-icons">input</i><b>Add Agent</b></a>
+                    </li>
 
                     <li class="no-padding">
-                        <a href="/add_maid/" class="collapsible-header waves-effect waves-grey"><i class="material-icons">rate_review</i>Add Maid</a>
+                        <a href="/admin/agents/" class="collapsible-header waves-effect waves-grey"><i class="material-icons">person</i><b>View &amp; Delete Agent</b></a>
                     </li>
-                    {% if request.user.is_admin or request.user.is_superuser %}
-                        <li class="no-padding">
-                            <a href="/agents/" class="collapsible-header waves-effect waves-grey"><i class="material-icons">person</i>Agents</a>
-                        </li>
-                        <li class="no-padding">
-                            <a href="/customers/" class="collapsible-header waves-effect waves-grey"><i class="material-icons">person</i>Customers</a>
-                        </li>
-                        <li class="no-padding">
-                            <a href="/requests/" class="collapsible-header waves-effect waves-grey"><i class="material-icons">input</i>Requests</a>
-                        </li>
-                    {% endif %}
-                    {% if request.user.is_admin %}
-                        <li class="no-padding">
-                            <a href="/profile/admin/" class="collapsible-header waves-effect waves-grey"><i class="material-icons">perm_identity</i>Profile</a>
-                        </li>
-                    {% elif request.user.is_agent %}
-                        <li class="no-padding">
-                            <a href="/requests/" class="collapsible-header waves-effect waves-grey"><i class="material-icons">input</i>Requests</a>
-                        </li>
-                        <li class="no-padding">
-                            <a href="/profile/agent/" class="collapsible-header waves-effect waves-grey"><i class="material-icons">perm_identity</i>Profile</a>
-                        </li>
-                    {% endif %}
                     <li class="no-padding">
-                        <a href="/logout/" class="collapsible-header waves-effect waves-grey"><i class="material-icons">close</i>Sign Out</a>
+                        <a href="/signup/customer/" class="collapsible-header waves-effect waves-grey"><i class="material-icons">input</i><b>Add Customer</b></a>
                     </li>
-                    {% elif request.user.is_customer %}
-                        <li class="no-padding">
-                            <a href="/requests/" class="collapsible-header waves-effect waves-grey"><i class="material-icons">input</i>Requests</a>
-                        </li>
-                        <li class="no-padding">
-                            <a href="/logout/" class="collapsible-header waves-effect waves-grey"><i class="material-icons">input</i>Logout</a>
-                        </li>
+
+                    <li class="no-padding">
+                        <a href="/admin/customers/" class="collapsible-header waves-effect waves-grey"><i class="material-icons">person</i><b>View &amp; Delete Customer</b></a>
+                    </li>
+                    <li class="no-padding">
+                        <a href="/admin/statistics/" class="collapsible-header waves-effect waves-grey"><i class="material-icons">input</i><b>Statistics</b></a>
+                    </li>
+                    <li class="no-padding">
+                        <a href="/admin/profile/" class="collapsible-header waves-effect waves-grey"><i class="material-icons">perm_identity</i><b>Admin Profile</b></a>
+                    </li>
+                    <li class="no-padding">
+                        <a href="/logout/" class="collapsible-header waves-effect waves-grey"><i class="material-icons">close</i><b>Sign Out</b></a>
+                    </li>
+
+                    {% elif request.user.is_agent %}
+                    <li class="no-padding">
+                        <a href="/agent/add_maid/" class="collapsible-header waves-effect waves-grey"><i class="material-icons">rate_review</i><b>Add Maid</b></a>
+                    </li>
+                    <li class="no-padding">
+                        <a href="/agent/" class="collapsible-header waves-effect waves-grey"><i class="material-icons">input</i><b>View &amp; Delete Maid</b></a>
+                    </li>
+                    <li class="no-padding">
+                        <a href="/agent/profile/" class="collapsible-header waves-effect waves-grey"><i class="material-icons">perm_identity</i><b>Agent Profile</b></a>
+                    </li>
+                    <li class="no-padding">
+                        <a href="/logout/" class="collapsible-header waves-effect waves-grey"><i class="material-icons">close</i><b>Sign Out</b></a>
+                    </li>
                     {% else %}
                      <li class="no-padding">
-                        <a href="/login/" class="collapsible-header waves-effect waves-grey"><i class="material-icons">input</i>Login</a>
+                        <a href="/login/" class="collapsible-header waves-effect waves-grey"><i class="material-icons">input</i><b>Login</b></a>
                     </li>
-                     <li class="no-padding">
-                        <a href="/signup/admin/" class="collapsible-header waves-effect waves-grey"><i class="material-icons">launch</i>Admin SignUp</a>
-                    </li>
-                     <li class="no-padding">
-                        <a href="/signup/agent/" class="collapsible-header waves-effect waves-grey"><i class="material-icons">open_in_new</i>Agent SignUp</a>
-                    </li>
-                    <li class="no-padding">
-                        <a href="/signup/customer/" class="collapsible-header waves-effect waves-grey"><i class="material-icons">open_in_new</i>Customer SignUp</a>
-                    </li>
+{#                     <li class="no-padding">#}
+{#                         <a href="/signup/admin/" class="collapsible-header waves-effect waves-grey"><i class="material-icons">launch</i><b>Admin SignUp</b></a>#}
+{#                    </li>#}
+{#                     <li class="no-padding">#}
+{#                         <a href="/signup/agent/" class="collapsible-header waves-effect waves-grey"><i class="material-icons">open_in_new</i><b>Agent SignUp</b></a>#}
+{#                    </li>#}
+{#                    <li class="no-padding">#}
+{#                        <a href="/signup/customer/" class="collapsible-header waves-effect waves-grey"><i class="material-icons">open_in_new</i><b>Customer SignUp</b></a>#}
+{#                    </li>#}
                     {% endif %}
 {#                    <li class="no-padding">#}
 {#                        <a class="collapsible-header waves-effect waves-grey"><i class="material-icons">code</i>Components</a>#}
@@ -214,7 +226,7 @@
 
                 </ul>
                 <div class="footer">
-                    <p class="copyright">Admin Demo</p>
+                    <p class="copyright">Admin Panel</p>
                     <a href="#!">Privacy</a> &amp; <a href="#!">Terms</a>
                 </div>
                 </div>

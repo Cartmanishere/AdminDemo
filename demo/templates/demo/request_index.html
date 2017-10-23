@@ -1,6 +1,6 @@
 {% extends 'demo/layout.html' %}
 {% block body %}
-    <h4 align="center">Requests</h4>
+    <h4 align="center">Statistics</h4>
     {% if requests %}
     {% for i in requests %}
     <div class="row">
@@ -17,7 +17,7 @@
                     {% if request.user.is_admin or request.user.is_superuser or request.user.is_agent %}
                          <a class="modal-trigger waves-effect waves-light btn indigo m-b-xs" href="#modal1" id="{{ i.id }}" onclick="status_change(this)">Change Status</a>
                     {% endif %}
-                    <a class="modal-trigger waves-effect waves-light btn red m-b-xs" href="/delete/request/{{ i.id }}/">Delete</a>
+                    <a class="modal-trigger waves-effect waves-light btn red m-b-xs" url="/delete/request/{{ i.id }}/" onclick="delete_alert(this)">Delete</a>
                 </div>
             </div>
         </div>
@@ -54,6 +54,24 @@
             var id = $(element).attr("id");
             $("#id").attr("value", id);
             console.log(id)
+        }
+        function payment(element){
+            var id = $(element).attr("id");
+            $("#id").attr("value", id);
+        }
+        function delete_alert(element){
+            var url = $(element).attr("url");
+            swal({
+                title: "Are you sure?",
+                text: "You will not be able to recover this information!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Yes, delete it!",
+                closeOnConfirm: true
+            }, function(){
+                location.href=url
+            });
         }
     </script>
 {% endblock %}

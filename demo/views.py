@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth.models import User, Group
@@ -197,16 +198,41 @@ def maid_delete(m):
         print(e)
         return False
 
-def index(request):
-    maids = Maid.objects.all()
+@login_required(login_url='/agent/login/')
+def index_gent(request):
     if request.user.is_authenticated:
         request.user.is_agent = is_agent(request.user)
         request.user.is_admin = is_admin(request.user)
         request.user.is_customer = is_customer(request.user)
+    if request.user.is_agent:
+        maids = Maid.objects.filter(user=request.user)
+        for i in maids:
+            i.uploads.passport_size.is_there = bool(i.uploads.passport_size)
 
-    return render(request, 'demo/maid_index.html', {'maids':maids})
 
-@login_required(login_url='/login/')
+
+        return render(request, 'demo/maid_index.html', {'maids':maids})
+
+    else:
+        return redirect('/')
+
+@login_required(login_url='/admin/login/')
+def index_dmin(request):
+    if request.user.is_authenticated:
+        request.user.is_agent = is_agent(request.user)
+        request.user.is_admin = is_admin(request.user)
+        request.user.is_customer = is_customer(request.user)
+    if request.user.is_admin:
+        maids = Maid.objects.all()
+        for i in maids:
+            i.uploads.passport_size.is_there = bool(i.uploads.passport_size)
+
+        return render(request, 'demo/maid_index.html', {'maids':maids})
+
+    else:
+        return redirect('/')
+
+@login_required(login_url='/admin/login/')
 def agent_index(request):
     request.user.is_agent = is_agent(request.user)
     request.user.is_admin = is_admin(request.user)
@@ -280,6 +306,31 @@ def request_add(request):
         messages.error(request, "You cannot request a quote.")
         return redirect('/')
 
+@login_required(login_url='/')
+def statistics(request):
+    request.user.is_agent = is_agent(request.user)
+    request.user.is_admin = is_admin(request.user)
+    request.user.is_customer = is_customer(request.user)
+    if request.user.is_admin or request.user.is_superuser:
+        hold = Request.objects.filter(status="Pending").count()
+        accepted = Request.objects.filter(status="Accepted").count()
+        rejected = Request.objects.filter(status="Rejected").count()
+        uploaded_profiles = Maid.objects.all().count()
+
+        return render(request, 'demo/statistics.html', {
+            'hold': hold,
+            'accepted':accepted,
+            'rejected':rejected,
+            'uploaded_profiles':uploaded_profiles
+        })
+
+
+    else:
+        messages.success(request, "You do not have permission to do this.")
+        return redirect('/')
+
+
+
 @login_required(login_url='/login/')
 def customer_index(request):
     request.user.is_agent = is_agent(request.user)
@@ -287,14 +338,22 @@ def customer_index(request):
     request.user.is_customer = is_customer(request.user)
     if request.user.is_admin or request.user.is_superuser:
         u = User.objects.filter(groups__name="Customer")
+        for i in u:
+            i.profile = CustomerProfile.objects.get(user=i)
+
+
         return render(request, 'demo/admin/customer_index.html', {'customers': u})
     else:
         messages.error(request, "You do not have permission to view this information.")
         return redirect('/')
 
-
+@login_required(login_url='/admin/login/')
 def signup_agent(request):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
+        request.user.is_agent = is_agent(request.user)
+        request.user.is_admin = is_admin(request.user)
+        request.user.is_customer = is_customer(request.user)
+    if not request.user.is_admin:
         return redirect('/')
     else:
         if request.method == "GET":
@@ -311,40 +370,47 @@ def signup_agent(request):
 
             add_profile(request, u, type="agent")
 
-            user = authenticate(username=email, password=password)
-            login(request, user)
-            messages.success(request, "Thank you for signing up!")
+            messages.success(request, "Successfully added agent.")
 
-            return redirect('/')
+            return redirect('/admin/')
 
 
-def signup_admin(request):
-    if request.user.is_authenticated():
-        return redirect('/')
-    else:
-        if request.method == "GET":
-            return render(request, 'demo/admin/admin_sign_up.html', {})
-
-        else:
-            email = request.POST['email']
-            password = request.POST['password']
-            group = Group.objects.get(name="Admin")
-            u = User(username=email, password=password)
-            u.set_password(password)
-            u.save()
-            u.groups.add(group)
-
-            add_profile(request, u, type="admin")
-
-
-            user = authenticate(username=email, password=password)
-            login(request, user)
-            messages.success(request, "Thank you for signing up!")
-
-            return redirect('/')
+# def signup_admin(request):
+#     if request.user.is_authenticated:
+#         request.user.is_agent = is_agent(request.user)
+#         request.user.is_admin = is_admin(request.user)
+#         request.user.is_customer = is_customer(request.user)
+#
+#     if request.user.is_authenticated():
+#         return redirect('/')
+#     else:
+#         if request.method == "GET":
+#             return render(request, 'demo/admin/admin_sign_up.html', {})
+#
+#         else:
+#             email = request.POST['email']
+#             password = request.POST['password']
+#             group = Group.objects.get(name="Admin")
+#             u = User(username=email, password=password)
+#             u.set_password(password)
+#             u.save()
+#             u.groups.add(group)
+#
+#             add_profile(request, u, type="admin")
+#
+#
+#             user = authenticate(username=email, password=password)
+#             login(request, user)
+#             messages.success(request, "Thank you for signing up!")
+#
+#             return redirect('/')
 
 def signup_customer(request):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
+        request.user.is_agent = is_agent(request.user)
+        request.user.is_admin = is_admin(request.user)
+        request.user.is_customer = is_customer(request.user)
+    if False:
         return redirect('/')
     else:
         if request.method == "GET":
@@ -354,18 +420,24 @@ def signup_customer(request):
             email = request.POST['email']
             password = request.POST['password']
             group = Group.objects.get(name="Customer")
-            u = User(username=email, password=password)
-            u.set_password(password)
-            u.save()
+            try:
+                u = User(username=email, password=password)
+                u.set_password(password)
+                u.save()
+            except Exception as e:
+                messages.error(request, "Customer with this email already exists.")
+                return redirect('/signup/customer/')
+
             u.groups.add(group)
 
             add_profile(request, u, type="customer")
 
+            if request.user.is_authenticated:
+                messages.success(request, "Customer has been added.")
+                return redirect('/admin/customers/')
 
             user = authenticate(username=email, password=password)
             login(request, user)
-            messages.success(request, "Thank you for signing up!")
-
             return redirect('/')
 
 def login_user(request):
@@ -382,11 +454,18 @@ def login_user(request):
             if u is not None:
                 if u.is_active:
                     login(request, u)
-                    return redirect("/")
+                    if is_agent(u):
+                        return redirect('/agent/')
+
+                    elif is_admin(u):
+                        return redirect('/admin/')
+
+                    else:
+                        return redirect("/")
 
                 else:
                     messages.add_message(request, messages.ERROR, "Your account has been disabled!")
-                    return redirect('/')
+                    return redirect('/login/')
 
             else:
                 messages.add_message(request, messages.ERROR, "Invalid Password/Username.")
@@ -677,7 +756,10 @@ def add_maid(request):
             maid.save()
 
             messages.success(request, "Maid has been created.")
-            return redirect('/')
+            if request.user.is_agent:
+                return redirect('/agent/')
+            else:
+                return redirect('/admin/')
         else:
             messages.error(request, "You cannot add a maid.")
             return redirect('/')
@@ -733,7 +815,10 @@ def delete_maid(request, id):
     if (is_agent(request.user) and m.user==request.user) or is_admin(request.user):
         maid_delete(m)
         messages.success(request, "Maid information has been deleted.")
-        return redirect('/')
+        if request.user.is_agent:
+            return redirect('/agent/')
+        else:
+            return redirect('/admin/')
 
     else:
         messages.error(request, "You do not have permission to delete this maid.")
@@ -749,7 +834,7 @@ def admin_profile(request):
         admin_profile.id_proof.aadhar_card.is_there = bool(admin_profile.id_proof.aadhar_card)
         admin_profile.id_proof.election_card.is_there = bool(admin_profile.id_proof.election_card)
         admin_profile.id_proof.pan_card.is_there = bool(admin_profile.id_proof.pan_card)
-        admin_profile.passport_size = bool(admin_profile.passport_size)
+        admin_profile.passport_size.is_there = bool(admin_profile.passport_size)
         return render(request, 'demo/agent/agent_profile.html', {'profile':admin_profile})
 
 
@@ -800,12 +885,12 @@ def customer_profile(request, id=None):
     request.user.is_admin = is_admin(request.user)
     request.user.is_customer = is_customer(request.user)
 
-    if is_agent(request.user):
+    if is_customer(request.user):
         customer_profile = CustomerProfile.objects.get(user=request.user)
         customer_profile.id_proof.aadhar_card.is_there = bool(customer_profile.id_proof.aadhar_card)
         customer_profile.id_proof.election_card.is_there = bool(customer_profile.id_proof.election_card)
         customer_profile.id_proof.pan_card.is_there = bool(customer_profile.id_proof.pan_card)
-        return render(request, 'demo/agent/customer_profile.html', {'profile': customer_profile})
+        return render(request, 'demo/agent/agent_profile.html', {'profile': customer_profile})
 
     elif is_admin(request.user):
         if id is not None:
@@ -828,6 +913,9 @@ def customer_profile(request, id=None):
     else:
         messages.error(request, 'You do not have permission for this.')
         return redirect('/')
+
+
+
 
 @login_required(login_url='/login/')
 def delete_agent(request, id):
@@ -857,8 +945,10 @@ def delete_agent(request, id):
         u.delete()
         profile.delete()
         messages.success(request, "Successfully deleted agent.")
-        return redirect('/')
-
+        if is_agent(request.user):
+            return redirect('/agent/')
+        else:
+            return redirect('/admin/')
     else:
         messages.error(request, "You have do not permission to do this operation.")
         return redirect('/')
@@ -889,7 +979,10 @@ def delete_customer(request, id):
         u.delete()
         profile.delete()
         messages.success(request, "Successfully deleted customer.")
-        return redirect('/')
+        if is_admin(request.user):
+            return redirect('/admin/customers/')
+        else:
+            return redirect('/')
 
     else:
         messages.error(request, "You have do not permission to do this operation.")
@@ -951,45 +1044,24 @@ def logout_user(request):
     else:
         return redirect('/')
 
-'''
-This
-project
-has
-been
-an
-harrowing
-experience.
-I
-cannot
-imagine
-how
-I
-managed
-it.
-I 
-am 
-leaving
-this
-long
-comment
-talking
-about
-useless
-things
-because
-I
-want
-to
-make
-this
-file
-have -
-not 
-more
-or
-less
-but
-exactly
-1000
-lines
-'''
+
+def maid_index(request):
+    file_set = Maid.objects.all()
+    for i in file_set:
+        i.uploads.passport_size.is_there = bool(i.uploads.passport_size)
+
+    paginator = Paginator(file_set, 12)
+
+    page = request.GET.get('page')
+    try:
+        maids = paginator.page(page)
+    except PageNotAnInteger:
+        maids = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        maids = paginator.page(paginator.num_pages)
+
+    return render(request, 'demo/index.html', {'maids':maids})
+
+
+

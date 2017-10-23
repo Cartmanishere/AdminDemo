@@ -11,7 +11,9 @@
                     <p class="flow-text">No. of Maids Added: {{ i.no_of_maids }}</p>
                 </div>
                 <div class="card-action">
-                    <a class="modal-trigger waves-effect waves-light btn red m-b-xs" href="/delete/agent/{{ i.id }}/">Delete</a>
+                                    <a class="waves-effect waves-light btn indigo m-b-xs" href="/profile/agent/{{ i.id }}">Complete Profile</a>
+
+                    <a class="waves-effect waves-light btn red m-b-xs" url="/delete/agent/{{ i.id }}/" onclick="delete_alert(this)">Delete</a>
                 </div>
             </div>
         </div>
@@ -27,6 +29,24 @@
             console.log(url)
             $("#take_exam").attr("href", url);
             console.log($("#take_exam").attr("href"))
+        }
+        function payment(element){
+            var id = $(element).attr("id");
+            $("#id").attr("value", id);
+        }
+        function delete_alert(element){
+            var url = $(element).attr("url");
+            swal({
+                title: "Are you sure?",
+                text: "You will not be able to recover this information!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Yes, delete it!",
+                closeOnConfirm: true
+            }, function(){
+                location.href=url
+            });
         }
     </script>
 {% endblock %}

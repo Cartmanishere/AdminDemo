@@ -7,11 +7,29 @@
         <div class="col s12 m12 l12">
             <div class="card white darken-1 hoverable">
                 <div class="card-content">
-                    <span class="card-title truncate">Username: {{ i.username }}</span>
-                    <p class="flow-text">Contact Number: {{ i.contact_number }}</p>
+                    <div class="row">
+                    <div class="col s9 l9">
+                        <div class="card-content">
+                            <span class="card-title truncate">{{ i.username }}</span>
+                            <p><strong>Age: </strong>&nbsp;&nbsp;&nbsp;{{ i.profile.age }}</p>
+                            <br>
+                            <p><strong>Contact Number: </strong>{{ i.profile.contact_number }}</p>
+
+
+                        </div>
+                    </div>
+                    <div class="col l3 s3">
+                        <div class="right-align photo" style="margin-top: 50px;margin-right: 50px;">
+                            {% if i.uploads.passport_size.is_there %}
+                                <img class="z-depth-2" src="{{ i.profile.passport_size.url }}" width="200px" height="200px">
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
                 </div>
                 <div class="card-action">
-                    <a class="modal-trigger waves-effect waves-light btn red m-b-xs" href="/delete/customer/{{ i.id }}/">Delete</a>
+                    <a class="waves-effect waves-light btn indigo m-b-xs" href="/profile/customer/{{ i.id }}">Complete Profile</a>
+                    <a class="waves-effect waves-light btn red m-b-xs" onclick="delete_alert(this)" url="/delete/customer/{{ i.id }}/">Delete</a>
                 </div>
             </div>
         </div>
@@ -26,6 +44,24 @@
             console.log(url)
             $("#take_exam").attr("href", url);
             console.log($("#take_exam").attr("href"))
+        }
+        function payment(element){
+            var id = $(element).attr("id");
+            $("#id").attr("value", id);
+        }
+        function delete_alert(element){
+            var url = $(element).attr("url");
+            swal({
+                title: "Are you sure?",
+                text: "You will not be able to recover this information!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Yes, delete it!",
+                closeOnConfirm: true
+            }, function(){
+                location.href=url
+            });
         }
     </script>
 {% endblock %}

@@ -1,5 +1,59 @@
 {% extends 'demo/layout.html' %}
 {% block body %}
+    <div class="card">
+        <div class="row">
+
+            <div class="col s12 m3">
+
+
+                <div class="card-image">
+
+                    {% if profile.passport_size.is_there %}
+
+                        <img src="{{ profile.passport_size.url }}" width="50" height="200">
+
+                    {% endif %}
+                </div>
+
+            </div>
+
+
+            <div class="col s12 m9">
+                <div class="card-content">
+                    <h2 style="">{{ profile.name }}</h2>
+                </div>
+
+                <div class="row">
+                    <div class="col s2 m1">
+                        <div class="card">
+                            <div class="card-image">
+                                <img src="https://www.facebook.com/images/fb_icon_325x325.png">
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col s2 m1">
+                        <div class="card">
+                            <div class="card-image">
+                                <img src="http://nextstepdancecompany.co.za/wp-content/uploads/2017/02/Google_plus.svg_.png">
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col s2 m1">
+                        <div class="card">
+                            <div class="card-image">
+                                <img src="https://instagram-brand.com/wp-content/themes/ig-branding/assets/images/ig-logo-email.png">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
     <div id="general" class="col s12">
 			      <div class="card">
 			      		<div class="card-content">

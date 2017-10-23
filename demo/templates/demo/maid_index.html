@@ -6,14 +6,31 @@
     <div class="row">
         <div class="col s12 m12 l12">
             <div class="card white darken-1 hoverable">
-                <div class="card-content">
-                    <span class="card-title truncate">{{ i.general_profile.name }}</span>
-                    <p><strong>Age: </strong>&nbsp;&nbsp;&nbsp;{{ i.general_profile.age }}</p>
+                <div class="row">
+                    <div class="col s9 l9">
+                        <div class="card-content">
+                            <span class="card-title truncate">{{ i.general_profile.name }}</span>
+                            <p><strong>Age: </strong>&nbsp;&nbsp;&nbsp;{{ i.general_profile.age }}</p>
+                            <br>
+                            <p class="myline-height"><strong>Job Experience:</strong></p>
+                            {% for exp in i.job_profile.job_experience.all %}
+                                <br><p class="myline-height">From: {{ exp.from_year }} To: {{ exp.to_year }} At: {{ exp.organisation }}</p>
+                            {% endfor %}
+
+                        </div>
+                    </div>
+                    <div class="col l3 s3">
+                        <div class="right-align photo" style="margin-top: 50px;margin-right: 50px;">
+                            {% if i.uploads.passport_size.is_there %}
+                                <img class="z-depth-2" src="{{ i.uploads.passport_size.url }}" width="200px" height="200px">
+                            {% endif %}
+                        </div>
+                    </div>
                 </div>
                 <div class="card-action">
-                    <a class="waves-effect waves-light btn indigo m-b-xs" href="/view/{{ i.id }}/">View Profile</a>
+                    <a class="waves-effect waves-light btn indigo m-b-xs" href="/view/{{ i.id }}/">Complete Profile</a>
                     {% if request.user.is_admin or i.user == request.user %}
-                        <a class="waves-effect waves-light btn red m-b-xs" href="/delete/maid/{{ i.id }}">Delete Profile</a>
+                        <a class="waves-effect waves-light btn red m-b-xs" url="/delete/maid/{{ i.id }}" onclick="delete_alert(this)">Delete Profile</a>
                     {% elif request.user.is_customer %}
                          <a class="modal-trigger waves-effect waves-light btn red m-b-xs" id="{{ i.id }}" onclick="payment(this)" href="#modal1">Request Quote</a>
                     {% endif %}
@@ -57,6 +74,20 @@
         function payment(element){
             var id = $(element).attr("id");
             $("#id").attr("value", id);
+        }
+        function delete_alert(element){
+            var url = $(element).attr("url");
+            swal({
+                title: "Are you sure?",
+                text: "You will not be able to recover this information!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Yes, delete it!",
+                closeOnConfirm: true
+            }, function(){
+                location.href=url
+            });
         }
     </script>
 {% endblock %}

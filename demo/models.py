@@ -238,7 +238,7 @@ class Request(models.Model):
     payment_option = models.CharField(max_length=100, choices=payment_choices)
     maid = models.ForeignKey(Maid, on_delete=models.CASCADE)
     status_choices = [
-        ('Pending', 'Pending'),
+        ('On Hold', 'On Hold'),
         ('Accepted', 'Accepted'),
         ('Rejected', 'Rejected')
     ]
