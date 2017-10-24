@@ -1,13 +1,18 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
+<!-- Mirrored from steelcoders.com/alpha/v1.2/ by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 12 Feb 2017 06:05:26 GMT -->
 <head>
-        {% load static %}
+
         <!-- Title -->
-        <title>Admin Panel</title>
+        <title>Maid Easy|Customer Sign up</title>
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
         <meta charset="UTF-8">
+        <meta name="description" content="Responsive Admin Dashboard Template" />
+        <meta name="keywords" content="admin,dashboard" />
+        <meta name="author" content="Steelcoders" />
 
         <!-- Styles -->
         <link type="text/css" rel="stylesheet" href="{% static 'assets/plugins/materialize/css/materialize.min.css' %}"/>
@@ -20,10 +25,22 @@
         <!-- Theme Styles -->
         <link href="{% static 'assets/css/alpha.min.css' %}" rel="stylesheet" type="text/css"/>
         <link href="{% static 'assets/css/custom.css' %}" rel="stylesheet" type="text/css"/>
-
         <script src="{% static 'assets/plugins/jquery/jquery-2.2.0.min.js' %}"></script>
+
         <script src="{% static 'assets/plugins/sweetalert/sweetalert.min.js' %}"></script>
 
+        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+        <script src="http://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="http://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <style type="text/css">
+        .pratyaa {
+            padding: 40px;
+        }
+        </style>
         <script type="text/javascript">
         $(document).ready(function(){
             {% if messages %}
@@ -47,38 +64,34 @@
         });
 
         </script>
-        <style>
-            .myline-height{
-                line-height: 1.5em;
-            }
-        </style>
-        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-        <script src="http://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-        <script src="http://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-        <![endif]-->
-
     </head>
     <body>
-    <br>
+
     <div class="row">
-        <div class="center-align"><span class="f-bold flow-text">Customer Information</span></div>
-        <div class="col s12 m12 l12">
+        <div class="col s12">
+            <div class="center-align f-bold"><h3>Customer Information</h3></div>
+        </div>
+        <div class="col s12 m10 l12">
             <form class="col s12" action="" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <!-- GENERAL INFORMATION -->
-
-
-                <div class="card">
-                    <div class="card-content">
 
                      <!-- Name Fields -->
 
                     <span class="card-title" style="font-size: 18px">General Profile</span><br><br />
                     <div class="row">
 
+                    <div class="card">
+                    <div class="card-content">
+
+                    <!-- collapsible starts -->
+                    <ul class="collapsible popout" data-collapsible="accordion">
+                        <li>
+                          <div class="collapsible-header"><i class="material-icons">lock</i>Login Credentials</div>
+                          <div class="collapsible-body pratyaa"><span>
+                            <!-- login credentials starts -->
                             <span class="" style="font-size: 18px"><strong>Login Information</strong></span><br><br />
+
                             <div class="row">
                                 <div class="input-field col s12 l6 m6">
                                     <input name="email" id="email" type="email" class="validate">
@@ -89,7 +102,13 @@
                                     <label for="password">Password</label>
                                 </div>
                             </div>
-
+                            <!-- login credentials ends -->
+                          </span></div>
+                        </li>
+                        <li>
+                          <div class="collapsible-header"><i class="material-icons">place</i>Basic Info</div>
+                          <div class="collapsible-body pratyaa"><span>
+                            <!-- Name Fields Starts -->
                             <span class="" style="font-size: 18px"><strong>Name Fields</strong></span><br><br />
                             <div class="row">
                                 <div class="input-field col s12 l4">
@@ -106,8 +125,12 @@
                                 </div>
                             </div>
 
-                    <!-- Name Fields End -->
-
+                            <!-- Name Fields End -->
+                          <!-- </span></div>
+                        </li>
+                        <li>
+                          <div class="collapsible-header"><i class="material-icons">whatshot</i>Third</div>
+                          <div class="collapsible-body pratyaa"><span> -->
                             <!-- Age -->
 
                             <span class="" style="font-size: 18px"><strong>Age</strong></span><br><br />
@@ -126,7 +149,13 @@
                             </div>
 
                             <!-- Age ends -->
-                            <!-- Telephone Number -->
+                          </span></div>
+                        </li>
+
+                        <li>
+                          <div class="collapsible-header"><i class="material-icons">phone</i>Contact Info</div>
+                          <div class="collapsible-body pratyaa"><span>
+                              <!-- Telephone Number -->
 
                             <span class="" style="font-size: 18px"><strong>Telephone Number</strong></span><br><br />
                             <div class="row">
@@ -151,7 +180,13 @@
                             </div>
 
                             <!-- Telephone Number ends -->
-                            <!-- Temporary address -->
+                          </span></div>
+                        </li>
+
+                        <li>
+                          <div class="collapsible-header"><i class="material-icons">add_location</i>Address</div>
+                          <div class="collapsible-body pratyaa"><span>
+                              <!-- Temporary address -->
 
                             <span class="" style="font-size: 18px"><strong>Temporary Address</strong></span><br><br />
                             <div class="row">
@@ -202,6 +237,8 @@
                             </div>
 
                             <!-- Temporary address ends -->
+
+
                             <!-- Permanent Address -->
 
                             <span class="" style="font-size: 18px"><strong>Permanent Address</strong></span><br><br />
@@ -251,11 +288,13 @@
                                     <label for="p_country">Country</label>
                                 </div>
                             </div>
-
                             <!-- Permanent Addresss ends -->
-
+                          </span></div>
+                        </li>
+                        <li>
+                          <div class="collapsible-header"><i class="material-icons">attach_file</i>ID proof</div>
+                          <div class="collapsible-body pratyaa"><span>
                             <!-- ID Proof fields -->
-
                             <span class="" style="font-size: 18px"><strong>ID Proof</strong></span><br><br />
                             <div class="row">
                                 <div class="col s12 m6 l6">
@@ -305,34 +344,34 @@
                                     </div>
                                 </div>
                             </div>
-
                             <!-- ID Proof ends -->
+                          </span></div>
+                        </li>
+                      </ul>
+                    <!-- collapsible ends -->
                         </div>
                     </div>
                 </div>
-
                 <!-- GENERAL INFORMATION ENDS -->
-
-
-
                 <div class="row">
                     <div class="col s12 m12 l12">
                         <input type="submit" class="waves-effect waves-green btn m-b-xs" value="submit">
-
                     </div>
                 </div>
             </form>
         </div>
     </div>
+<div class="left-sidebar-hover"></div>
 
-<!-- Javascripts -->
+
+        <!-- Javascripts -->
         <script src="{% static 'assets/plugins/materialize/js/materialize.min.js' %}"></script>
         <script src="{% static 'assets/plugins/material-preloader/js/materialPreloader.min.js' %}"></script>
         <script src="{% static 'assets/plugins/jquery-blockui/jquery.blockui.js' %}"></script>
         <script src="{% static 'assets/plugins/waypoints/jquery.waypoints.min.js' %}"></script>
         <script src="{% static 'assets/plugins/counter-up-master/jquery.counterup.min.js' %}"></script>
         <script src="{% static 'assets/plugins/jquery-sparkline/jquery.sparkline.min.js' %}"></script>
-        <script src="{% static 'assets/js/pages/form_elements.js' %}"></script>
+        <script src="{% static 'assets/plugins/chart.js/chart.min.js' %}"></script>
         <script src="{% static 'assets/plugins/flot/jquery.flot.min.js' %}"></script>
         <script src="{% static 'assets/plugins/flot/jquery.flot.time.min.js' %}"></script>
         <script src="{% static 'assets/plugins/flot/jquery.flot.symbol.min.js' %}"></script>
@@ -341,8 +380,8 @@
         <script src="{% static 'assets/plugins/curvedlines/curvedLines.js' %}"></script>
         <script src="{% static 'assets/plugins/peity/jquery.peity.min.js' %}"></script>
         <script src="{% static 'assets/js/alpha.min.js' %}"></script>
-
+        <script src="{% static 'assets/js/pages/dashboard.js' %}"></script>
 
     </body>
-
+<!-- Mirrored from steelcoders.com/alpha/v1.2/ by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 12 Feb 2017 06:06:21 GMT -->
 </html>
